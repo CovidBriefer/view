@@ -7,9 +7,10 @@
     color: white;
 }
 
-body {
+body,
+#root {
     width: 100%;
-    background-color: #163550;
+    background-color: #163550 !important;
     height: 100vh;
 }
 
@@ -18,4 +19,12 @@ body {
     padding-left: env(safe-area-inset-left);
     padding-right: env(safe-area-inset-right);
     padding-bottom: env(safe-area-inset-bottom);
+}
+
+.setup-start-wrapper {
+    width: 100%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }
