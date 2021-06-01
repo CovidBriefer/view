@@ -4,8 +4,8 @@ import { IonReactRouter } from "@ionic/react-router"
 
 import { Storage } from "@capacitor/storage"
 // import Loading from "./Loading"
-import Setup from "./setup/Setup"
-import Home from "./Home"
+import Setup from "./pages/setup/Setup"
+import Home from "./pages/Home"
 import { IonApp, IonRouterOutlet } from "@ionic/react"
 
 const App: React.FC = () => {
