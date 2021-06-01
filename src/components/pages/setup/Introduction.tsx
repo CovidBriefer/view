@@ -1,7 +1,7 @@
 import React from "react"
 import icon128 from "../../../assets/icons/icon-128.svg"
 import Button from "../../Button"
-import { Page } from "./Setup"
+import { Page } from "../../../"
 
 interface Props {
     updatePage: (page: Page) => void
