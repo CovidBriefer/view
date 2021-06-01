@@ -6,12 +6,14 @@ module.exports = {
     theme: {
         extend: {
             colors: {
-                gray: colors.gray
-            }
-        }
+                gray: colors.gray,
+                "light-gray": "#D3D3D3",
+                primary: "#56CEC0",
+            },
+        },
     },
     variants: {
-        extend: {}
+        extend: {},
     },
-    plugins: []
+    plugins: [],
 }
