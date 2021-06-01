@@ -3,7 +3,6 @@ import ReactDOM from "react-dom"
 import App from "./components/App"
 
 import { ScreenOrientation } from "@ionic-native/screen-orientation"
-import { StatusBar, Style } from "@capacitor/status-bar"
 import { Storage } from "@capacitor/storage"
 
 import "./styles/index.css"
@@ -25,8 +24,12 @@ import "@ionic/react/css/text-transformation.css"
 import "@ionic/react/css/flex-utils.css"
 import "@ionic/react/css/display.css"
 
-ScreenOrientation.lock("portrait")
-StatusBar.setStyle({ style: Style.Dark })
+import { StatusBar, Style } from "@capacitor/status-bar"
+console.log("NODE ENV:", process.env.NODE_ENV)
+if (process.env.NODE_ENV !== "development") {
+    ScreenOrientation.lock("portrait")
+    StatusBar.setStyle({ style: Style.Dark })
+}
 
 Storage.get({ key: "initialized" }).then(res => {
     if (!res.value) {
