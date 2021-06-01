@@ -31,12 +31,20 @@ if (process.env.NODE_ENV !== "development") {
     StatusBar.setStyle({ style: Style.Dark })
 }
 
+export type Page = "introduction" | "configuration"
+export type Config = {
+    setup: {
+        done: boolean
+        currentPage: Page | null
+    }
+}
+
 Storage.get({ key: "initialized" }).then(res => {
     if (!res.value) {
         // set initial storage
         Storage.set({
             key: "config",
-            value: JSON.stringify({ setup: false }),
+            value: JSON.stringify({ setup: { done: false, currentPage: "introduction" } } as Config),
         })
     }
 })
