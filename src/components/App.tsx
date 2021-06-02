@@ -22,28 +22,34 @@ const App: React.FC = () => {
     const [loading, setLoading] = useState(true)
 
     useEffect(() => {
-        console.log("Getting config")
-        store?.get("config").then(item => {
-            if (item) {
-                const parsedConf: Config = JSON.parse(item)
-                setSetupPage(parsedConf.setup.currentPage)
-            }
-            setLoading(false)
-        })
+        if (store) {
+            console.log("Getting config")
+            store?.get("config").then(item => {
+                if (item) {
+                    const parsedConf: Config = JSON.parse(item)
+                    setSetupPage(parsedConf.setup.currentPage)
+                }
+                setLoading(false)
+            })
+        }
     }, [store])
 
     const createStorage = async () => {
         const _store = new Storage()
-        _store.create()
+        await _store.create()
+        // _store.clear()
         // _store.set("config", JSON.stringify({ setup: { done: false, currentPage: "introduction" } } as Config))
 
-        _store.get("config").then(res => {
+        _store.get("config").then(async res => {
             if (!res) {
                 console.log("No config set, setting...")
-                _store.set("config", JSON.stringify({ setup: { done: false, currentPage: "introduction" } } as Config))
+                await _store.set(
+                    "config",
+                    JSON.stringify({ setup: { done: false, currentPage: "introduction" } } as Config)
+                )
             }
         })
-        _store.set("initialized", "true")
+        await _store.set("initialized", "true")
         setStore(_store)
         return
     }
