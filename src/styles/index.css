@@ -21,6 +21,11 @@ body,
     padding-bottom: env(safe-area-inset-bottom);
 }
 
+.ion-loading-custom {
+    --background: transparent;
+    --spinner-color: #fff;
+}
+
 .setup-start-wrapper {
     width: 100%;
     position: absolute;
