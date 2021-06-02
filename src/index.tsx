@@ -3,7 +3,6 @@ import ReactDOM from "react-dom"
 import App from "./components/App"
 
 import { ScreenOrientation } from "@ionic-native/screen-orientation"
-import { Storage } from "@capacitor/storage"
 
 import "./styles/index.css"
 import "./styles/tailwind.css"
@@ -39,15 +38,20 @@ export type Config = {
     }
 }
 
-Storage.get({ key: "initialized" }).then(res => {
-    if (!res.value) {
-        // set initial storage
-        Storage.set({
-            key: "config",
-            value: JSON.stringify({ setup: { done: false, currentPage: "introduction" } } as Config),
-        })
-    }
-})
+// Storage.remove({ key: "initialized" })
+// Storage.get({ key: "initialized" }).then(async res => {
+//     if (!res.value) {
+//         // set initial storage
+//         await Storage.set({
+//             key: "initialized",
+//             value: "true",
+//         })
+//         await Storage.set({
+//             key: "config",
+//             value: JSON.stringify({ setup: { done: false, currentPage: "introduction" } } as Config),
+//         })
+//     }
+// })
 
 ReactDOM.render(
     <React.StrictMode>
