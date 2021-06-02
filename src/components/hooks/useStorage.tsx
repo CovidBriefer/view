@@ -3,7 +3,7 @@ import { StorageContext } from "../App"
 
 function useStorage(key: string, parse: boolean = false) {
     const [loading, setLoading] = useState(true)
-    const [data, setData] = useState<string | null>(null)
+    const [data, setData] = useState<string | Object | null>(null)
     const { store } = useContext(StorageContext)
 
     useEffect(() => {
