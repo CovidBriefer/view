@@ -12,7 +12,7 @@ function useStorage(key: string, parse: boolean = false) {
         store
             ?.get(firstKey)
             .then(res => {
-                if (parse) {
+                if (parse && res) {
                     const obj = JSON.parse(res)
                     if (split.slice(1)[0]) {
                         const newObj = byString(obj, split.slice(1).join("."))
