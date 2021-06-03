@@ -1,4 +1,3 @@
-import { motion } from "framer-motion"
 import React, { useEffect, useState } from "react"
 import Button from "../../Button"
 import Dropdown from "../../Dropdown"
@@ -50,7 +49,7 @@ const Configuration: React.FC<Props> = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [_districts, _districtsLoading, selectedState])
     return (
-        <motion.div animate={{ opacity: 1 }} initial={{ opacity: 0 }} transition={{ delay: 0.5 }}>
+        <div>
             <Header />
             <div className="text-center mt-16">
                 <h1 className="text-3xl font-bold mb-2">Willkommen</h1>
@@ -78,9 +77,11 @@ const Configuration: React.FC<Props> = () => {
                     list={districts}
                     callback={district => setSelectedDistrict(district)}
                 />
-                <Button className="mt-20">Weiter</Button>
             </div>
-        </motion.div>
+            <div className="absolute bottom-12 w-full flex justify-center">
+                <Button className="mx-auto">Weiter</Button>
+            </div>
+        </div>
     )
 }
 
