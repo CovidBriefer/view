@@ -30,28 +30,13 @@ if (process.env.NODE_ENV !== "development") {
     StatusBar.setStyle({ style: Style.Dark })
 }
 
-export type Page = "introduction" | "configuration"
+export type Page = "introduction" | "configuration" | null
 export type Config = {
     setup: {
         done: boolean
         currentPage: Page | null
     }
 }
-
-// Storage.remove({ key: "initialized" })
-// Storage.get({ key: "initialized" }).then(async res => {
-//     if (!res.value) {
-//         // set initial storage
-//         await Storage.set({
-//             key: "initialized",
-//             value: "true",
-//         })
-//         await Storage.set({
-//             key: "config",
-//             value: JSON.stringify({ setup: { done: false, currentPage: "introduction" } } as Config),
-//         })
-//     }
-// })
 
 ReactDOM.render(
     <React.StrictMode>
