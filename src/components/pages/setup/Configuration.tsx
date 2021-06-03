@@ -1,3 +1,4 @@
+import { motion } from "framer-motion"
 import React, { useEffect, useState } from "react"
 import Button from "../../Button"
 import Dropdown from "../../Dropdown"
@@ -67,19 +68,29 @@ const Configuration: React.FC<Props> = () => {
                     list={states}
                     callback={state => setSelectedState(state)}
                 />
-                <Dropdown
-                    heading={
-                        <h1 className="text-lg mb-2 font-medium tracking-tighter text-left">
-                            In welchem <span className="text-primary">Kreis</span> lebst du?
-                        </h1>
-                    }
-                    initialHeader="Wähle einen Kreis"
-                    list={districts}
-                    callback={district => setSelectedDistrict(district)}
-                />
+                {selectedState && (
+                    <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ delay: 0.3, duration: 0.15 }}
+                    >
+                        <Dropdown
+                            heading={
+                                <h1 className="text-lg mb-2 font-medium tracking-tighter text-left">
+                                    In welchem <span className="text-primary">Kreis</span> lebst du?
+                                </h1>
+                            }
+                            initialHeader="Wähle einen Kreis"
+                            list={districts}
+                            callback={district => setSelectedDistrict(district)}
+                        />
+                    </motion.div>
+                )}
             </div>
             <div className="absolute bottom-12 w-full flex justify-center">
-                <Button className="mx-auto">Weiter</Button>
+                <Button disabled={!(selectedDistrict && selectedState)} className="mx-auto">
+                    Weiter
+                </Button>
             </div>
         </div>
     )
