@@ -33,3 +33,12 @@ body,
     left: 50%;
     transform: translate(-50%, -50%);
 }
+
+.setup-button {
+    transition: 0.2s ease;
+}
+
+.setup-button:active {
+    transition: 0.2s ease;
+    transform: scale(0.95);
+}
