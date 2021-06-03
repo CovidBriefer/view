@@ -21,7 +21,7 @@ const Introduction: React.FC<Props> = ({ updatePage }) => {
                     </p>
                 </div>
             </div>
-            <div className="absolute bottom-12 w-full flex justify-center">
+            <div className="absolute bottom-16 w-full flex justify-center">
                 <Button className="mx-auto" onClick={() => updatePage("configuration")}>
                     Los geht’s
                 </Button>
