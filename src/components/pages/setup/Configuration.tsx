@@ -5,9 +5,7 @@ import Dropdown from "../../Dropdown"
 import Header from "../../Header"
 import useCovidApi, { District, State } from "../../hooks/useCovidApi"
 
-interface Props {}
-
-const Configuration: React.FC<Props> = () => {
+const Configuration: React.FC = () => {
     const [states, setStates] = useState<State[]>([])
     const [districts, setDistricts] = useState<District[]>([])
 

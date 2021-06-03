@@ -1,9 +1,7 @@
 import React from "react"
 import PageLayout from "../PageLayout"
 
-interface Props {}
-
-const Home: React.FC<Props> = props => {
+const Home: React.FC = () => {
     return (
         <PageLayout>
             <h1>Home</h1>
