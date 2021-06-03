@@ -4,8 +4,13 @@ import Button from "../../Button"
 import Dropdown from "../../Dropdown"
 import Header from "../../Header"
 import useCovidApi, { District, State } from "../../hooks/useCovidApi"
+import { Page } from "../../.."
 
-const Configuration: React.FC = () => {
+type Props = {
+    updatePage: (page: Page) => void
+}
+
+const Configuration: React.FC<Props> = ({ updatePage }) => {
     const [states, setStates] = useState<State[]>([])
     const [districts, setDistricts] = useState<District[]>([])
 
@@ -17,10 +22,6 @@ const Configuration: React.FC = () => {
     })
 
     const { response: _districts, loading: _districtsLoading } = useCovidApi({ method: "GET", url: "/districts" })
-
-    useEffect(() => {
-        // continue
-    }, [selectedDistrict])
 
     useEffect(() => {
         if (!loading && response) {
@@ -40,7 +41,6 @@ const Configuration: React.FC = () => {
 
     useEffect(() => {
         if (!_districtsLoading && _districts && selectedState) {
-            console.log(_districts, _districtsLoading)
             const data = _districts.data
 
             parseDistricts(data)
@@ -86,7 +86,11 @@ const Configuration: React.FC = () => {
                 )}
             </div>
             <div className="absolute bottom-16 w-full flex justify-center">
-                <Button disabled={!(selectedDistrict && selectedState)} className="mx-auto">
+                <Button
+                    disabled={!(selectedDistrict && selectedState)}
+                    onClick={() => updatePage(null)}
+                    className="mx-auto"
+                >
                     Weiter
                 </Button>
             </div>
