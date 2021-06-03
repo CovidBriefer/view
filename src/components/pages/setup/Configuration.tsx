@@ -52,17 +52,17 @@ const Configuration: React.FC<Props> = () => {
     return (
         <div>
             <Header />
-            <div className="text-center mt-10">
-                <h1 className="text-3xl font-bold mb-2">Willkommen</h1>
-                <p className="text-light-gray text-base tracking-tighter leading-4 max-w-xs mx-auto">
-                    Um dir die wichtigsten Informationen kurz zusammenfassen können, benötigen wir einige Angaben von
-                    dir, um unsere Inhalte bestmöglichst auf dich zuzuschneiden.
+            <div className="text-center mt-16">
+                <h1 className="text-4xl font-bold mb-3">Willkommen</h1>
+                <p className="text-light-gray text-lg tracking-tighter leading-5 max-w-xs mx-auto">
+                    Um dir die wichtigsten Informationen kurz zusammenfassen zu können, benötigen wir einige Angaben von
+                    dir.
                 </p>
                 <Dropdown
                     heading={
-                        <h1 className="text-lg mb-2 font-medium tracking-tighter text-left">
+                        <DropdownHeading>
                             In welchem <span className="text-primary">Bundesland</span> lebst du?
-                        </h1>
+                        </DropdownHeading>
                     }
                     initialHeader="Wähle eine Bundesland"
                     list={states}
@@ -76,9 +76,9 @@ const Configuration: React.FC<Props> = () => {
                     >
                         <Dropdown
                             heading={
-                                <h1 className="text-lg mb-2 font-medium tracking-tighter text-left">
+                                <DropdownHeading>
                                     In welchem <span className="text-primary">Kreis</span> lebst du?
-                                </h1>
+                                </DropdownHeading>
                             }
                             initialHeader="Wähle einen Kreis"
                             list={districts}
@@ -87,7 +87,7 @@ const Configuration: React.FC<Props> = () => {
                     </motion.div>
                 )}
             </div>
-            <div className="absolute bottom-12 w-full flex justify-center">
+            <div className="absolute bottom-16 w-full flex justify-center">
                 <Button disabled={!(selectedDistrict && selectedState)} className="mx-auto">
                     Weiter
                 </Button>
@@ -95,6 +95,10 @@ const Configuration: React.FC<Props> = () => {
         </div>
     )
 }
+
+const DropdownHeading: React.FC = ({ children }) => (
+    <h1 className="text-xl mb-2 font-medium tracking-tighter text-left">{children}</h1>
+)
 
 const filter = (obj: any, predicate: (district: District) => void) =>
     Object.keys(obj)
