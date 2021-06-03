@@ -16,15 +16,11 @@ const Setup: React.FC = () => {
     const { data: _currentPage, loading: currentPageLoading } = useStorage("config.setup.currentPage", true)
 
     useEffect(() => {
-        if (!_configLoading && _config) {
-            setConfig(_config as Config)
-        }
+        if (!_configLoading && _config) setConfig(_config as Config)
     }, [_config, _configLoading])
 
     useEffect(() => {
-        if (!currentPageLoading && _currentPage) {
-            setCurrentPage(_currentPage as Page)
-        }
+        if (!currentPageLoading && _currentPage) setCurrentPage(_currentPage as Page)
     }, [_currentPage, currentPageLoading])
 
     const updatePage = (page: Page) => {
