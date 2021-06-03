@@ -52,7 +52,7 @@ const Configuration: React.FC<Props> = () => {
     return (
         <div>
             <Header />
-            <div className="text-center mt-16">
+            <div className="text-center mt-10">
                 <h1 className="text-3xl font-bold mb-2">Willkommen</h1>
                 <p className="text-light-gray text-base tracking-tighter leading-4 max-w-xs mx-auto">
                     Um dir die wichtigsten Informationen kurz zusammenfassen können, benötigen wir einige Angaben von
