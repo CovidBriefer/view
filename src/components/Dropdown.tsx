@@ -26,7 +26,6 @@ const Dropdown: React.FC<Props> = ({ heading, list: initialList, initialHeader, 
     const [list, setList] = useState<any[]>([])
 
     useEffect(() => {
-        console.log("List:", initialList)
         setList(initialList)
         setHeaderTitle(initialHeader || "Select an item")
         // eslint-disable-next-line react-hooks/exhaustive-deps
