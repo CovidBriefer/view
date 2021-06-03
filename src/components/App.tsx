@@ -68,12 +68,16 @@ const App: React.FC = () => {
                         cssClass="ion-loading-custom"
                         animated={true}
                         showBackdrop={false}
-                        // onDidDismiss={() => }
                     />
                 ) : (
                     <IonReactRouter>
                         <IonRouterOutlet>
-                            <Route path="/" render={() => (setupPage === null ? <Home /> : <Setup />)} exact={true} />
+                            <Route
+                                path="/"
+                                render={({ history }) => (setupPage === null ? <Home /> : <Setup history={history} />)}
+                                exact={true}
+                            />
+                            <Route path="/home" component={Home} exact={true} />
                         </IonRouterOutlet>
                     </IonReactRouter>
                 )}
