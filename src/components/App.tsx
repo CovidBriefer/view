@@ -29,7 +29,9 @@ const App: React.FC = () => {
                     const parsedConf: Config = JSON.parse(item)
                     setSetupPage(parsedConf.setup.currentPage)
                 }
-                setLoading(false)
+                setTimeout(() => {
+                    setLoading(false)
+                }, 250)
             })
         }
     }, [store])
