@@ -1,7 +1,7 @@
 import axios, { AxiosRequestConfig } from "axios"
 import { useEffect, useState } from "react"
 
-axios.defaults.baseURL = "https://covidapi-cb.wening.me/states"
+axios.defaults.baseURL = "https://covidapi-cb.wening.me"
 
 type Response<T> = {
     response: T
