@@ -19,10 +19,6 @@ export type IncidenceData = {
     abbreviation?: string
     weekIncidence: number
     casesPer100k: number
-    incidenceHistory: {
-        weekIncidence: number
-        date: string
-    }[]
     delta: {
         cases: number
         deaths: number
@@ -31,8 +27,16 @@ export type IncidenceData = {
 }
 
 const Overview: React.FC = () => {
-    const { data: incidenceItems, loading: incidenceItemsLoading } = useStorage("config.incidence.items", true)
+    const { data: cachedIncidenceItems, loading: cachedIncidenceItemsLoading } = useStorage(
+        "config.incidence.items",
+        true
+    )
     const [germanyData, setGermanyData] = useState<IncidenceData | null>(null)
+    const [incidenceItems, setIncidenceItems] = useState<IncidenceData[]>([])
+
+    useEffect(() => {
+        if (cachedIncidenceItems || !cachedIncidenceItemsLoading) setIncidenceItems(cachedIncidenceItems)
+    }, [cachedIncidenceItems, cachedIncidenceItemsLoading])
 
     const [loading, setLoading] = useState(true)
 
@@ -52,11 +56,11 @@ const Overview: React.FC = () => {
                 <FaRegChartBar size={25} className="mr-2" color="#56CEC0" />
                 <h2 className="m-0 font-semibold text-2xl">Inzidenzentwicklung</h2>
             </div>
-            {!loading && !incidenceItemsLoading ? (
+            {!loading && !cachedIncidenceItemsLoading ? (
                 <div className="w-full mt-5">
                     <Item type="germany" data={germanyData!!} />
-                    {incidenceItems.map((item: IncidenceData, i: number) => (
-                        <Item key={i} type={item.type} data={item} />
+                    {incidenceItems.map((item: IncidenceData) => (
+                        <Item key={item.abbreviation ?? item.ags} type={item.type} data={item} />
                     ))}
                 </div>
             ) : (
