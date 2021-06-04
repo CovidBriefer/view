@@ -25,6 +25,7 @@ const App: React.FC = () => {
         if (store) {
             console.log("Getting config")
             store?.get("config").then(item => {
+                console.log("Config:", item)
                 if (item) {
                     const parsedConf: Config = JSON.parse(item)
                     setSetupPage(parsedConf.setup.currentPage)

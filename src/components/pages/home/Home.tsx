@@ -6,7 +6,7 @@ import Overview from "./incidence/Overview"
 const Home: React.FC = () => {
     return (
         <PageLayout className="mt-2">
-            <div className="px-2">
+            <div className="px-3 mx-auto">
                 <Header showSettingsIcon={true} />
                 <Overview />
             </div>
