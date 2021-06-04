@@ -7,6 +7,7 @@ import Configuration from "./Configuration"
 import { StorageContext } from "../../App"
 import useStorage from "../../hooks/useStorage"
 import { History } from "history"
+import { District, State } from "../../hooks/useCovidApi"
 
 type Props = {
     history?: History<unknown>
@@ -29,6 +30,9 @@ const Setup: React.FC<Props> = ({ history }) => {
     const [currentPage, setCurrentPage] = useState<Page>("introduction")
     const [config, setConfig] = useState<Config | null>(null)
 
+    const [selectedDistrict, setSelectedDistrict] = useState<District>()
+    const [selectedState, setSelectedState] = useState<State>()
+
     const { data: _config, loading: configLoading } = useStorage("config", true)
     const { data: _currentPage, loading: currentPageLoading } = useStorage("config.setup.currentPage", true)
 
@@ -40,7 +44,7 @@ const Setup: React.FC<Props> = ({ history }) => {
         if (!currentPageLoading && _currentPage) setCurrentPage(_currentPage as Page)
     }, [_currentPage, currentPageLoading])
 
-    const updatePage = (page: Page) => {
+    const updatePage = async (page: Page) => {
         const conf: any = { ...config }
         conf.setup.currentPage = page
         if (!page) {
@@ -49,8 +53,30 @@ const Setup: React.FC<Props> = ({ history }) => {
         }
         console.log("Updated page!")
         console.log("New config:", conf)
-        store?.set("config", JSON.stringify(conf))
+        await writeConfig(conf)
         setCurrentPage(page)
+    }
+
+    const writeConfig = async (conf: any) => {
+        console.log("Writing new config...", conf)
+        await store?.set("config", JSON.stringify(conf))
+        console.log("New config written")
+        store?.get("config").then(res => {
+            console.log(res, "GOT UPDATED NEW CONFIG")
+        })
+    }
+
+    const finishSetup = async () => {
+        console.log("Selected state:", selectedState)
+        console.log("Selected district:", selectedDistrict)
+        console.log("Current config:", config)
+        const conf: any = { ...config }
+        conf.incidence = {
+            items: [{ ...selectedDistrict, type: "district" }],
+        }
+        console.log("Set new conf:", conf)
+        await writeConfig(conf)
+        history?.push("/home")
     }
 
     return (
@@ -74,13 +100,19 @@ const Setup: React.FC<Props> = ({ history }) => {
                             variants={secVariants}
                             animate={"show"}
                             exit={"exit"}
-                            onAnimationComplete={type => type === "exit" && history?.push("/home")}
+                            onAnimationComplete={type => type === "exit" && finishSetup()}
                             key="config"
                             className="absolute top-0 left-0 w-full h-full"
                             initial={"initial"}
                             transition={{ duration: 0.3 }}
                         >
-                            <Configuration updatePage={updatePage} />
+                            <Configuration
+                                selectedDistrict={selectedDistrict}
+                                selectedState={selectedState}
+                                setSelectedDistrict={setSelectedDistrict}
+                                setSelectedState={setSelectedState}
+                                updatePage={updatePage}
+                            />
                         </motion.div>
                     )
                 )}

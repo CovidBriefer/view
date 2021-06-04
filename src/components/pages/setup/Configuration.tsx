@@ -8,14 +8,21 @@ import { Page } from "../../.."
 
 type Props = {
     updatePage: (page: Page) => void
+    selectedState?: State
+    selectedDistrict?: District
+    setSelectedDistrict: React.Dispatch<React.SetStateAction<District | undefined>>
+    setSelectedState: React.Dispatch<React.SetStateAction<State | undefined>>
 }
 
-const Configuration: React.FC<Props> = ({ updatePage }) => {
+const Configuration: React.FC<Props> = ({
+    updatePage,
+    selectedDistrict,
+    selectedState,
+    setSelectedDistrict,
+    setSelectedState,
+}) => {
     const [states, setStates] = useState<State[]>([])
     const [districts, setDistricts] = useState<District[]>([])
-
-    const [selectedDistrict, setSelectedDistrict] = useState<District>()
-    const [selectedState, setSelectedState] = useState<State>()
     const { response, loading, error } = useCovidApi({
         method: "GET",
         url: "/states",
@@ -49,8 +56,10 @@ const Configuration: React.FC<Props> = ({ updatePage }) => {
     }, [_districts, _districtsLoading, selectedState])
     return (
         <div>
-            <Header />
-            <div className="text-center mt-16">
+            <div className="mt-16 px-8">
+                <Header />
+            </div>
+            <div className="text-center mt-12">
                 <h1 className="text-4xl font-bold mb-3">Willkommen</h1>
                 <p className="text-light-gray text-lg tracking-tighter leading-5 max-w-xs mx-auto">
                     Um dir die wichtigsten Informationen kurz zusammenfassen zu können, benötigen wir einige Angaben von
