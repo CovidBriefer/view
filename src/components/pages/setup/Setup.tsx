@@ -58,12 +58,7 @@ const Setup: React.FC<Props> = ({ history }) => {
     }
 
     const writeConfig = async (conf: any) => {
-        console.log("Writing new config...", conf)
         await store?.set("config", JSON.stringify(conf))
-        console.log("New config written")
-        store?.get("config").then(res => {
-            console.log(res, "GOT UPDATED NEW CONFIG")
-        })
     }
 
     const finishSetup = async () => {
@@ -73,6 +68,7 @@ const Setup: React.FC<Props> = ({ history }) => {
         const conf: any = { ...config }
         conf.incidence = {
             items: [{ ...selectedDistrict, type: "district" }],
+            lastUpdate: Date.now(),
         }
         console.log("Set new conf:", conf)
         await writeConfig(conf)
