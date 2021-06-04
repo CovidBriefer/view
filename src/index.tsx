@@ -24,9 +24,10 @@ import "@ionic/react/css/flex-utils.css"
 import "@ionic/react/css/display.css"
 
 import { StatusBar, Style } from "@capacitor/status-bar"
-
-ScreenOrientation.lock("portrait")
-StatusBar.setStyle({ style: Style.Dark })
+if (process.env.NODE_ENV !== "development") {
+    ScreenOrientation.lock("portrait")
+    StatusBar.setStyle({ style: Style.Dark })
+}
 
 export type Page = "introduction" | "configuration" | null
 export type Config = {
