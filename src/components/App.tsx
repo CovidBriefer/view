@@ -3,7 +3,7 @@ import { Route } from "react-router-dom"
 import { IonReactRouter } from "@ionic/react-router"
 
 import Setup from "./pages/setup/Setup"
-import Home from "./pages/Home"
+import Home from "./pages/home/Home"
 import { IonApp, IonLoading, IonRouterOutlet } from "@ionic/react"
 import { Config, Page } from ".."
 import { Storage } from "@ionic/storage"
