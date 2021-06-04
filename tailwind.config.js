@@ -11,6 +11,8 @@ module.exports = {
                 primary: "#56CEC0",
                 "primary-dark": "#0E3558",
                 "bg-light": "#1F4160",
+                increasing: "#F67280",
+                decreasing: "#2ECC71",
             },
         },
     },
