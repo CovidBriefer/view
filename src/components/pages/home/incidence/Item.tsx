@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from "react"
+import React from "react"
 import arrowUp from "../../../../assets/icons/arrow-up.svg"
 import arrowDown from "../../../../assets/icons/arrow-down.svg"
 import { IncidenceData } from "./Overview"
-import axios from "axios"
+import useCovidHistory, { Params } from "../../../hooks/useCovidHistory"
 
 export type IncidenceType = "germany" | "state" | "district"
 
@@ -12,41 +12,15 @@ interface Props {
 }
 
 const Item: React.FC<Props> = ({ data, type }) => {
-    // const [incidenceHistory, setIncidenceHistory] = useState()
-    const [pastIncidence, setPastIncidence] = useState(0)
-    const [difference, setDifference] = useState(0)
-    const [diffType, setDiffType] = useState<"inc" | "dec">("inc")
+    const params_ = { incidenceData: { weekIncidence: data.weekIncidence } }
+    const params =
+        type === "district"
+            ? { ...params_, type: "district", ags: data.ags! }
+            : type === "state"
+            ? { ...params_, type: "state", abbreviation: data.abbreviation! }
+            : { ...params_, type: "germany" }
 
-    useEffect(() => {
-        const base = `https://covidapi-cb.wening.me/${type !== "germany" ? type + "s" : type}`
-        const postfix = "history/incidence/2"
-        let url = ""
-        url =
-            base +
-            `/${type === "state" ? data.abbreviation + "/" : type === "district" ? data.ags + "/" : ""}${postfix}`
-        axios.get(url).then(res => {
-            if (res) {
-                const pastData = res.data.data
-                if (type === "germany") {
-                    setPastIncidence(pastData[0].weekIncidence)
-                    const diff = pastIncidence - data.weekIncidence
-                    setDifference(+diff)
-                    setDiffType(diff > 0 ? "dec" : "inc")
-                } else {
-                    // pastData[key].history[0]
-                    console.log("")
-                    const obj = pastData[Object.keys(pastData)[0]]
-                    const history = obj.history
-                    setPastIncidence(history[0].weekIncidence)
-                    const diff = pastIncidence - data.weekIncidence
-                    console.log(`Past incidence: ${pastIncidence}; Current incidence: ${data.weekIncidence}`)
-                    console.log(diff, history)
-                    setDifference(Math.abs(diff))
-                    setDiffType(diff > 0 ? "dec" : "inc")
-                }
-            }
-        })
-    }, [pastIncidence, data.weekIncidence, type, data.abbreviation, data.ags])
+    const { diffType, difference } = useCovidHistory(params as Params)
 
     return (
         <div className="bg-bg-light px-5 py-3 my-3 flex items-center justify-between rounded" style={{ width: "100%" }}>
