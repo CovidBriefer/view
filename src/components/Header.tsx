@@ -8,7 +8,7 @@ type Props = {
 
 const Header: React.FC<Props> = ({ showSettingsIcon = false }) => {
     return (
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between mt-10">
             <img src={icon64} width="45" alt="Icon" />
             {showSettingsIcon && <FaCog fontSize={25} color="#D3D3D3" />}
         </div>

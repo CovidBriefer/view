@@ -19,13 +19,13 @@ const Configuration: React.FC<Props> = ({
     selectedDistrict,
     selectedState,
     setSelectedDistrict,
-    setSelectedState,
+    setSelectedState
 }) => {
     const [states, setStates] = useState<State[]>([])
     const [districts, setDistricts] = useState<District[]>([])
     const { response, loading, error } = useCovidApi({
         method: "GET",
-        url: "/states",
+        url: "/states"
     })
 
     const { response: _districts, loading: _districtsLoading } = useCovidApi({ method: "GET", url: "/districts" })

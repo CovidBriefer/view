@@ -23,11 +23,17 @@ import "@ionic/react/css/text-transformation.css"
 import "@ionic/react/css/flex-utils.css"
 import "@ionic/react/css/display.css"
 
-import { StatusBar, Style } from "@capacitor/status-bar"
-if (process.env.NODE_ENV !== "development") {
-    ScreenOrientation.lock("portrait")
+ScreenOrientation.lock("portrait")
+
+if (Capacitor.isPluginAvailable("StatusBar")) {
+    console.log("c")
     StatusBar.setStyle({ style: Style.Dark })
-}
+    StatusBar.setOverlaysWebView({ overlay: true })
+} else console.log("d")
+
+setupConfig({
+    mode: "ios"
+})
 
 export type Page = "introduction" | "configuration" | null
 export type Config = {

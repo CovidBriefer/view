@@ -19,7 +19,7 @@ const Item: React.FC<Props> = ({ data }) => {
     const { diffType, difference, loading } = useCovidHistory({
         type: data.type,
         param: data.type === "district" ? data.ags! : data.type === "state" ? data.abbreviation! : "",
-        incidenceData: { weekIncidence: incidenceData?.weekIncidence },
+        incidenceData: { weekIncidence: incidenceData?.weekIncidence }
     })
 
     const fetchIncidenceData = () => {

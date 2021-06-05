@@ -40,7 +40,7 @@ const Overview: React.FC = () => {
                         type: "state",
                         id: 2,
                         name: "Hamburg",
-                        abbreviation: "HH",
+                        abbreviation: "HH"
                     }}
                 />
                 {incidenceItems.map((item: IncidenceItem) => (

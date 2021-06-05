@@ -12,11 +12,11 @@ interface Props {
 
 const variants: Variants = {
     show: {
-        opacity: 1,
+        opacity: 1
     },
     hidden: {
-        opacity: 0,
-    },
+        opacity: 0
+    }
 }
 
 const Dropdown: React.FC<Props> = ({ heading, list: initialList, initialHeader, callback }) => {
