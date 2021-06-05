@@ -30,7 +30,7 @@ const Overview: React.FC = () => {
     return (
         <div className="mt-7">
             <div className="flex items-center">
-                <FaRegChartBar size={25} className="mr-2" color="#56CEC0" />
+                <FaRegChartBar size={25} className="mr-2" color="#56CEC0" fill="#56CEC0" />
                 <h2 className="m-0 font-semibold text-2xl">Inzidenzentwicklung</h2>
             </div>
             <div className="w-full mt-5">
