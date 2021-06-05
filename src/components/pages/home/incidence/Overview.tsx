@@ -1,29 +1,19 @@
-import { IonLoading } from "@ionic/react"
-import axios from "axios"
 import React, { useEffect, useState } from "react"
 import { FaRegChartBar } from "react-icons/fa"
 import useStorage from "../../../hooks/useStorage"
-import Item, { IncidenceType } from "./Item"
+import Item from "./Item"
 
-export type IncidenceData = {
+export type IncidenceType = "germany" | "state" | "district"
+
+export type IncidenceItem = {
     type: IncidenceType
     id?: number
     name: string
     ags?: string
-    population?: number
-    cases: number
-    deaths: number
-    casesPerWeek: number
-    deathsPerWeek?: number
-    recovered: number
+    stateAbbreviation?: string
+    state?: string
+    county?: string
     abbreviation?: string
-    weekIncidence: number
-    casesPer100k: number
-    delta: {
-        cases: number
-        deaths: number
-        recovered: number
-    }
 }
 
 const Overview: React.FC = () => {
@@ -31,24 +21,11 @@ const Overview: React.FC = () => {
         "config.incidence.items",
         true
     )
-    const [germanyData, setGermanyData] = useState<IncidenceData | null>(null)
-    const [incidenceItems, setIncidenceItems] = useState<IncidenceData[]>([])
+    const [incidenceItems, setIncidenceItems] = useState<IncidenceItem[]>([])
 
     useEffect(() => {
         if (cachedIncidenceItems || !cachedIncidenceItemsLoading) setIncidenceItems(cachedIncidenceItems)
     }, [cachedIncidenceItems, cachedIncidenceItemsLoading])
-
-    const [loading, setLoading] = useState(true)
-
-    useEffect(() => {
-        axios.get("https://covidapi-cb.wening.me/germany").then(res => {
-            console.log(res.data)
-            const data = res.data
-            // delete data.meta
-            setGermanyData({ ...data, name: "Deutschland" })
-            setLoading(false)
-        })
-    }, [])
 
     return (
         <div className="mt-7">
@@ -56,22 +33,20 @@ const Overview: React.FC = () => {
                 <FaRegChartBar size={25} className="mr-2" color="#56CEC0" />
                 <h2 className="m-0 font-semibold text-2xl">Inzidenzentwicklung</h2>
             </div>
-            {!loading && !cachedIncidenceItemsLoading ? (
-                <div className="w-full mt-5">
-                    <Item type="germany" data={germanyData!!} />
-                    {incidenceItems.map((item: IncidenceData) => (
-                        <Item key={item.abbreviation ?? item.ags} type={item.type} data={item} />
-                    ))}
-                </div>
-            ) : (
-                <IonLoading
-                    isOpen={loading}
-                    spinner="crescent"
-                    cssClass="ion-loading-custom"
-                    animated={false}
-                    showBackdrop={false}
+            <div className="w-full mt-5">
+                <Item data={{ type: "germany", name: "Deutschland" }} />
+                <Item
+                    data={{
+                        type: "state",
+                        id: 2,
+                        name: "Hamburg",
+                        abbreviation: "HH",
+                    }}
                 />
-            )}
+                {incidenceItems.map((item: IncidenceItem) => (
+                    <Item key={item.abbreviation ?? item.ags} data={item} />
+                ))}
+            </div>
         </div>
     )
 }
