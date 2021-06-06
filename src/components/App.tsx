@@ -46,7 +46,9 @@ const App: React.FC = () => {
                 console.log("No config set, setting...")
                 await _store.set(
                     "config",
-                    JSON.stringify({ setup: { done: false, currentPage: "introduction" } } as Config)
+                    JSON.stringify({
+                        setup: { done: false, currentPage: "introduction" }
+                    } as Config)
                 )
             }
         })

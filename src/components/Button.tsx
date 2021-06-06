@@ -19,12 +19,12 @@ const Button: React.FC<Props> = ({ children, onClick, className, disabled = fals
                 !disabled
                     ? {
                           borderRadius: "3px",
-                          filter: "drop-shadow(0px 4px 6px rgba(0, 0, 0, 0.25))",
+                          filter: "drop-shadow(0px 4px 6px rgba(0, 0, 0, 0.25))"
                       }
                     : {
                           backgroundColor: "rgba(86, 206, 192, 0.5",
                           borderRadius: "3px",
-                          filter: "drop-shadow(0px 4px 6px rgba(0, 0, 0, 0.25))",
+                          filter: "drop-shadow(0px 4px 6px rgba(0, 0, 0, 0.25))"
                       }
             }
         >

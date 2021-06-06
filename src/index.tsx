@@ -3,6 +3,9 @@ import ReactDOM from "react-dom"
 import App from "./components/App"
 
 import { ScreenOrientation } from "@ionic-native/screen-orientation"
+import { setupConfig } from "@ionic/react"
+import { Capacitor } from "@capacitor/core"
+import { StatusBar, Style } from "@capacitor/status-bar"
 
 import "./styles/index.css"
 import "./styles/tailwind.css"
@@ -23,11 +26,16 @@ import "@ionic/react/css/text-transformation.css"
 import "@ionic/react/css/flex-utils.css"
 import "@ionic/react/css/display.css"
 
-import { StatusBar, Style } from "@capacitor/status-bar"
-if (process.env.NODE_ENV !== "development") {
-    ScreenOrientation.lock("portrait")
+ScreenOrientation.lock("portrait")
+
+if (Capacitor.isPluginAvailable("StatusBar")) {
     StatusBar.setStyle({ style: Style.Dark })
+    StatusBar.setOverlaysWebView({ overlay: true })
 }
+
+setupConfig({
+    mode: "ios"
+})
 
 export type Page = "introduction" | "configuration" | null
 export type Config = {

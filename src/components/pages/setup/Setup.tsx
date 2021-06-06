@@ -16,13 +16,13 @@ type Props = {
 const variants = {
     show: { opacity: 1 },
     exit: { x: "-100%", transition: { duration: 0.3 } },
-    initial: { opacity: 0 },
+    initial: { opacity: 0 }
 }
 
 const secVariants = {
     show: { x: 0 },
     exit: { x: "-100%", transition: { duration: 0.3 } },
-    initial: { x: "100%" },
+    initial: { x: "100%" }
 }
 
 const Setup: React.FC<Props> = ({ history }) => {
@@ -68,7 +68,7 @@ const Setup: React.FC<Props> = ({ history }) => {
         const conf: any = { ...config }
         conf.incidence = {
             items: [{ ...selectedDistrict, type: "district" }],
-            lastUpdate: Date.now(),
+            lastUpdate: Date.now()
         }
         console.log("Set new conf:", conf)
         await writeConfig(conf)

@@ -23,7 +23,7 @@ body,
 
 .ion-loading-custom {
     --background: transparent;
-    --spinner-color: #fff;
+    --spinner-color: #FFFFFF;
 }
 
 .setup-start-wrapper {
