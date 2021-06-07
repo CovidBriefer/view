@@ -15,15 +15,23 @@ body,
 }
 
 .page-layout {
-    padding-top: calc(env(safe-area-inset-top) + 0.5rem);
+    padding-top: env(safe-area-inset-top);
     padding-left: env(safe-area-inset-left);
     padding-right: env(safe-area-inset-right);
     padding-bottom: env(safe-area-inset-bottom);
 }
 
+/* Set style only for android */
+.md .your-class-name {
+}
+
+/* Set style only for ios */
+.ios .your-class-name {
+}
+
 .ion-loading-custom {
     --background: transparent;
-    --spinner-color: #FFFFFF;
+    --spinner-color: #ffffff;
 }
 
 .setup-start-wrapper {
