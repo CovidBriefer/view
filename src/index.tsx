@@ -30,7 +30,7 @@ ScreenOrientation.lock("portrait")
 
 if (Capacitor.isPluginAvailable("StatusBar")) {
     StatusBar.setStyle({ style: Style.Dark })
-    StatusBar.setOverlaysWebView({ overlay: true })
+    if (Capacitor.getPlatform() === "android") StatusBar.setOverlaysWebView({ overlay: true })
 }
 
 setupConfig({
