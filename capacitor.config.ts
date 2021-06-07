@@ -1,4 +1,11 @@
 import { CapacitorConfig } from "@capacitor/cli"
+import { networkInterfaces } from "os"
+
+const getLocalExternalIP = () =>
+    []
+        .concat(...Object.values(networkInterfaces()))
+        .filter(details => details.family === "IPv4" && !details.internal)
+        .pop().address
 
 const config: CapacitorConfig = {
     appId: "me.wening.covidbriefer",
@@ -6,9 +13,9 @@ const config: CapacitorConfig = {
     webDir: "build",
     bundledWebRuntime: false,
     server: {
-        url: "http://192.168.1.4:3000",
-        cleartext: true,
-    },
+        url: `http://${getLocalExternalIP()}:3000`,
+        cleartext: true
+    }
 }
 
 export default config
