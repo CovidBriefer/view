@@ -35,14 +35,6 @@ const Overview: React.FC = () => {
             </div>
             <div className="w-full mt-5">
                 <Item data={{ type: "germany", name: "Deutschland" }} />
-                <Item
-                    data={{
-                        type: "state",
-                        id: 2,
-                        name: "Hamburg",
-                        abbreviation: "HH"
-                    }}
-                />
                 {incidenceItems.map((item: IncidenceItem) => (
                     <Item key={item.abbreviation ?? item.ags} data={item} />
                 ))}
