@@ -43,7 +43,10 @@ const Item: React.FC<Props> = ({ data }) => {
     }, [])
 
     return (
-        <div className="bg-bg-light px-5 py-3 my-3 flex items-center justify-between rounded" style={{ width: "100%" }}>
+        <div
+            className="bg-bg-light px-5 py-3 my-4 flex items-center justify-between rounded"
+            style={{ width: "100%", filter: "drop-shadow(0px 4px 6px rgba(0, 0, 0, 0.075))" }}
+        >
             <h3
                 className="text-lg text-light-gray font-medium m-0 w-1/2"
                 style={{ textOverflow: "ellipsis", overflow: "hidden", whiteSpace: "nowrap" }}
