@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useState } from "react"
 
 interface Props {
     onClick?: () => void
@@ -14,7 +14,7 @@ const Button: React.FC<Props> = ({ children, onClick, className, disabled = fals
             onClick={() => !disabled && onClick?.()}
             className={
                 "setup-button bg-primary py-1 px-20 focus:outline-none text-primary-dark font-semibold tracking-tighter text-lg shadow-2xl " +
-                (shadow && " setup-button_shadow") +
+                (shadow && " setup-button_shadow ") +
                 className
             }
             style={
