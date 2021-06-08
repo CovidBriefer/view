@@ -1,5 +1,6 @@
+import { motion } from "framer-motion"
 import React, { useEffect, useState } from "react"
-import { FaRegChartBar } from "react-icons/fa"
+import { FaRegChartBar, FaPlus } from "react-icons/fa"
 import useStorage from "../../../../hooks/useStorage"
 import Item from "./Item"
 
@@ -38,6 +39,17 @@ const Overview: React.FC = () => {
                 {incidenceItems.map((item: IncidenceItem) => (
                     <Item key={item.abbreviation ?? item.ags} data={item} />
                 ))}
+                <motion.button
+                    className={
+                        "w-full flex items-center justify-center setup-button mt-6 py-3 bg-bg-light px-20 focus:outline-non font-semibold tracking-tighter text-lg"
+                    }
+                    whileTap={{ scale: 0.97 }}
+                >
+                    <FaPlus className="m-0 mr-2" size={18} fill="#D3D3D3" />
+                    <span style={{ color: "#D3D3D3" }} className="font-bold text-lg">
+                        Hinzufügen
+                    </span>
+                </motion.button>
             </div>
         </div>
     )
