@@ -7,6 +7,7 @@ import Home from "./pages/home/Home"
 import { IonApp, IonLoading, IonRouterOutlet } from "@ionic/react"
 import { Config, Page } from ".."
 import { Storage } from "@ionic/storage"
+import { SocketProvider } from "../contexts/SocketProvider"
 
 type StorageContextProps = {
     store: Storage | null
@@ -71,16 +72,20 @@ const App: React.FC = () => {
                         showBackdrop={false}
                     />
                 ) : (
-                    <IonReactRouter>
-                        <IonRouterOutlet>
-                            <Route
-                                path="/"
-                                render={({ history }) => (setupPage === null ? <Home /> : <Setup history={history} />)}
-                                exact={true}
-                            />
-                            <Route path="/home" component={Home} exact={true} />
-                        </IonRouterOutlet>
-                    </IonReactRouter>
+                    <SocketProvider>
+                        <IonReactRouter>
+                            <IonRouterOutlet>
+                                <Route
+                                    path="/"
+                                    render={({ history }) =>
+                                        setupPage === null ? <Home /> : <Setup history={history} />
+                                    }
+                                    exact={true}
+                                />
+                                <Route path="/home" component={Home} exact={true} />
+                            </IonRouterOutlet>
+                        </IonReactRouter>
+                    </SocketProvider>
                 )}
             </IonApp>
         </StorageContext.Provider>
