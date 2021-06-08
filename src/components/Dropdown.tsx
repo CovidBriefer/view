@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react"
 import { FaAngleDown, FaAngleUp } from "react-icons/fa"
 
 interface Props {
-    heading: JSX.Element
+    heading: JSX.Element | string
     list: any[]
     initialHeader?: string
     callback: (selection: any) => void
