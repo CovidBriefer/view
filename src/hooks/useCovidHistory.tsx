@@ -1,6 +1,6 @@
 import axios from "axios"
 import { useEffect, useState } from "react"
-import { IncidenceType } from "../pages/home/incidence/Overview"
+import { IncidenceType } from "../components/pages/home/incidence/Overview"
 
 export type HistoryParams = {
     type: IncidenceType

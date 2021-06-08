@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from "react"
-import { StorageContext } from "../App"
+import { StorageContext } from "../components/App"
 
 function useStorage(key: string, parse: boolean = false) {
     const [loading, setLoading] = useState(true)
