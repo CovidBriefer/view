@@ -2,6 +2,7 @@ import { motion } from "framer-motion"
 import React, { useEffect, useState } from "react"
 import { FaRegChartBar, FaPlus } from "react-icons/fa"
 import useStorage from "../../../../hooks/useStorage"
+import AppendItemOverlay from "./AppendItemOverlay"
 import Item from "./Item"
 
 export type IncidenceType = "germany" | "state" | "district"
@@ -23,6 +24,7 @@ const Overview: React.FC = () => {
         true
     )
     const [incidenceItems, setIncidenceItems] = useState<IncidenceItem[]>([])
+    const [showAppendModal, setShowAppendModal] = useState(false)
 
     useEffect(() => {
         if (cachedIncidenceItems || !cachedIncidenceItemsLoading) setIncidenceItems(cachedIncidenceItems)
@@ -41,9 +43,10 @@ const Overview: React.FC = () => {
                 ))}
                 <motion.button
                     className={
-                        "w-full flex items-center justify-center setup-button mt-6 py-3 bg-bg-light px-20 focus:outline-non font-semibold tracking-tighter text-lg"
+                        "w-full flex items-center justify-center setup-button mt-6 py-2 bg-bg-light px-20 focus:outline-non font-semibold tracking-tighter text-lg"
                     }
                     whileTap={{ scale: 0.97 }}
+                    onClick={() => setShowAppendModal(prev => !prev)}
                 >
                     <FaPlus className="m-0 mr-2" size={18} fill="#D3D3D3" />
                     <span style={{ color: "#D3D3D3" }} className="font-bold text-lg">
@@ -51,6 +54,7 @@ const Overview: React.FC = () => {
                     </span>
                 </motion.button>
             </div>
+            {showAppendModal && <AppendItemOverlay />}
         </div>
     )
 }
