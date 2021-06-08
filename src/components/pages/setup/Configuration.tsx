@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react"
 import Button from "../../Button"
 import Dropdown from "../../Dropdown"
 import Header from "../../Header"
-import useCovidApi, { District, State } from "../../hooks/useCovidApi"
+import useCovidApi, { District, State } from "../../../hooks/useCovidApi"
 import { Page } from "../../.."
 
 type Props = {

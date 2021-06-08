@@ -4,7 +4,7 @@ import arrowDown from "../../../../assets/icons/arrow-down.svg"
 import { IncidenceItem } from "./Overview"
 // import useCovidHistory, { Params } from "../../../hooks/useCovidHistory"
 import axios from "axios"
-import useCovidHistory from "../../../hooks/useCovidHistory"
+import useCovidHistory from "../../../../hooks/useCovidHistory"
 
 interface Props {
     data: IncidenceItem

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react"
 import { FaRegChartBar } from "react-icons/fa"
-import useStorage from "../../../hooks/useStorage"
+import useStorage from "../../../../hooks/useStorage"
 import Item from "./Item"
 
 export type IncidenceType = "germany" | "state" | "district"

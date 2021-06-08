@@ -5,9 +5,9 @@ import Introduction from "./Introduction"
 import { AnimatePresence, motion } from "framer-motion"
 import Configuration from "./Configuration"
 import { StorageContext } from "../../App"
-import useStorage from "../../hooks/useStorage"
+import useStorage from "../../../hooks/useStorage"
 import { History } from "history"
-import { District, State } from "../../hooks/useCovidApi"
+import { District, State } from "../../../hooks/useCovidApi"
 
 type Props = {
     history?: History<unknown>
