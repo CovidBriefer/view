@@ -8,6 +8,7 @@ interface Props {
     list: any[]
     initialHeader?: string
     callback: (selection: any) => void
+    orientation?: "top" | "bottom"
 }
 
 const variants: Variants = {
@@ -19,7 +20,7 @@ const variants: Variants = {
     }
 }
 
-const Dropdown: React.FC<Props> = ({ heading, list: initialList, initialHeader, callback }) => {
+const Dropdown: React.FC<Props> = ({ heading, list: initialList, initialHeader, callback, orientation = "bottom" }) => {
     const [isListOpen, setIsListOpen] = useState(false)
     const [headerTitle, setHeaderTitle] = useState(initialHeader || "Select an item")
     const [listDisplay, setListDisplay] = useState<"hidden" | "show">("hidden")
@@ -50,11 +51,14 @@ const Dropdown: React.FC<Props> = ({ heading, list: initialList, initialHeader, 
         setListDisplay(type as "hidden" | "show")
     }
     return (
-        <div className="dd-wrapper mt-10 w-5/6 mx-auto relative">
+        <div
+            className="dd-wrapper mt-10 w-5/6 mx-auto relative"
+            style={{ filter: "drop-shadow(0px 2px 6px rgba(0, 0, 0, 0.1))" }}
+        >
             {heading}
             <div
                 onClick={toggleList}
-                className="dd-header text-base border-b-4 border-primary-dark bg-bg-light py-1 px-4 w-full flex justify-between items-center mx-auto focus:outline-none"
+                className="dd-header text-lg border-b-2 border-primary-dark bg-bg-light py-1 px-4 w-full flex justify-between items-center mx-auto focus:outline-none"
             >
                 <div className="dd-header-title">{headerTitle}</div>
                 <span>{isListOpen ? <FaAngleUp /> : <FaAngleDown />}</span>
@@ -68,7 +72,9 @@ const Dropdown: React.FC<Props> = ({ heading, list: initialList, initialHeader, 
                 exit="hidden"
                 role="list"
                 className={
-                    "dd-list max-h-32 overflow-auto w-full z-50 " + (listDisplay === "hidden" ? "hidden" : "absolute")
+                    (orientation === "top" ? "bottom-10 " : "") +
+                    "dd-list max-h-32 overflow-auto w-full z-50 " +
+                    (listDisplay === "hidden" ? "hidden" : "absolute")
                 }
             >
                 {list.map(
@@ -78,7 +84,7 @@ const Dropdown: React.FC<Props> = ({ heading, list: initialList, initialHeader, 
                                 key={item.id}
                                 onClick={() => selectItem(item)}
                                 className={
-                                    "bg-bg-light py-2 px-4 w-full text-base flex justify-between border-b-2 border-primary-dark items-center mx-auto focus:outline-none"
+                                    "bg-bg-light py-2 px-4 w-full text-lg flex justify-between border-b-2 border-primary-dark items-center mx-auto focus:outline-none"
                                 }
                             >
                                 <div className="dd-list-item">{item.name}</div>
