@@ -1,7 +1,7 @@
 import { motion, Variants } from "framer-motion"
 import { AnimationDefinition } from "framer-motion/types/render/utils/animation"
 import React, { useEffect, useState } from "react"
-import { FaAngleDown, FaAngleUp } from "react-icons/fa"
+import { FaAngleDown } from "react-icons/fa"
 
 interface Props {
     heading: JSX.Element | string
@@ -9,6 +9,7 @@ interface Props {
     initialHeader?: string
     callback: (selection: any) => void
     orientation?: "top" | "bottom"
+    dropShadow?: "none" | (string & {})
 }
 
 const variants: Variants = {
@@ -20,7 +21,14 @@ const variants: Variants = {
     }
 }
 
-const Dropdown: React.FC<Props> = ({ heading, list: initialList, initialHeader, callback, orientation = "bottom" }) => {
+const Dropdown: React.FC<Props> = ({
+    heading,
+    list: initialList,
+    initialHeader,
+    callback,
+    orientation = "bottom",
+    dropShadow = "none"
+}) => {
     const [isListOpen, setIsListOpen] = useState(false)
     const [headerTitle, setHeaderTitle] = useState(initialHeader || "Select an item")
     const [listDisplay, setListDisplay] = useState<"hidden" | "show">("hidden")
@@ -51,17 +59,21 @@ const Dropdown: React.FC<Props> = ({ heading, list: initialList, initialHeader, 
         setListDisplay(type as "hidden" | "show")
     }
     return (
-        <div
-            className="dd-wrapper mt-10 w-5/6 mx-auto relative"
-            style={{ filter: "drop-shadow(0px 2px 6px rgba(0, 0, 0, 0.1))" }}
-        >
+        <div className="dd-wrapper mt-10 w-full mx-auto relative" style={{ filter: dropShadow }}>
             {heading}
             <div
                 onClick={toggleList}
-                className="dd-header text-lg border-b-2 border-primary-dark bg-bg-light py-1 px-4 w-full flex justify-between items-center mx-auto focus:outline-none"
+                style={{ background: "#254866" }}
+                className="dd-header text-lg border-b-2 border-primary-dark py-1 px-4 w-full flex justify-between items-center mx-auto focus:outline-none"
             >
                 <div className="dd-header-title">{headerTitle}</div>
-                <span>{isListOpen ? <FaAngleUp /> : <FaAngleDown />}</span>
+                <motion.span
+                    initial={{ transform: "rotate(0)" }}
+                    transition={{ duration: 0.18 }}
+                    animate={isListOpen ? { transform: "rotate(180deg)" } : { transform: "rotate(0deg)" }}
+                >
+                    <FaAngleDown />
+                </motion.span>
             </div>
             <motion.div
                 variants={variants}
@@ -83,8 +95,13 @@ const Dropdown: React.FC<Props> = ({ heading, list: initialList, initialHeader, 
                             <div
                                 key={item.id}
                                 onClick={() => selectItem(item)}
+                                style={{
+                                    background: "#254866",
+                                    borderColor: "#173752",
+                                    borderBottomWidth: "1px"
+                                }}
                                 className={
-                                    "bg-bg-light py-2 px-4 w-full text-lg flex justify-between border-b-2 border-primary-dark items-center mx-auto focus:outline-none"
+                                    "py-2 px-4 w-full text-lg flex justify-between items-center mx-auto focus:outline-none"
                                 }
                             >
                                 <div className="dd-list-item">{item.name}</div>
@@ -93,6 +110,7 @@ const Dropdown: React.FC<Props> = ({ heading, list: initialList, initialHeader, 
                 )}
             </motion.div>
         </div>
+        // </div>
     )
 }
 
