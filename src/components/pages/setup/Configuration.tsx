@@ -5,6 +5,7 @@ import Dropdown from "../../Dropdown"
 import Header from "../../Header"
 import useCovidApi, { District, State } from "../../../hooks/useCovidApi"
 import { Page } from "../../.."
+import { compare, formatStates } from "../../../utils/format"
 
 type Props = {
     updatePage: (page: Page) => void
@@ -33,9 +34,7 @@ const Configuration: React.FC<Props> = ({
     useEffect(() => {
         if (!loading && response) {
             const data = response.data
-            const _states: State[] = []
-            Object.keys(data).forEach(key => _states.push({ ...data[key] }))
-            setStates(_states.sort((a, b) => compare(a, b, "name")))
+            setStates(formatStates(data))
         }
     }, [response, loading, error])
 
@@ -110,21 +109,10 @@ const Configuration: React.FC<Props> = ({
 const DropdownHeading: React.FC = ({ children }) => (
     <h1 className="text-xl mb-2 font-medium tracking-tighter text-left">{children}</h1>
 )
-
 const filter = (obj: any, predicate: (district: District) => void) =>
     Object.keys(obj)
         .filter(key => predicate(obj[key]))
         // eslint-disable-next-line no-sequences
         .reduce((res: any, key) => ((res[key] = obj[key]), res), {})
-
-function compare(a: any, b: any, by: string) {
-    if (a[by] < b[by]) {
-        return -1
-    }
-    if (a[by] > b[by]) {
-        return 1
-    }
-    return 0
-}
 
 export default Configuration
