@@ -1,4 +1,4 @@
-import { motion } from "framer-motion"
+import { AnimatePresence, motion } from "framer-motion"
 import React, { useEffect, useState } from "react"
 import { FaRegChartBar, FaPlus } from "react-icons/fa"
 import useStorage from "../../../../hooks/useStorage"
@@ -38,15 +38,16 @@ const Overview: React.FC = () => {
             </div>
             <div className="w-full mt-5">
                 <Item data={{ type: "germany", name: "Deutschland" }} />
-                {incidenceItems.map((item: IncidenceItem) => (
-                    <Item key={item.abbreviation ?? item.ags} data={item} />
-                ))}
+                {incidenceItems &&
+                    incidenceItems.map((item: IncidenceItem) => (
+                        <Item key={item.abbreviation ?? item.ags} data={item} />
+                    ))}
                 <motion.button
                     className={
                         "w-full flex items-center justify-center setup-button mt-6 py-2 bg-bg-light px-20 focus:outline-non font-semibold tracking-tighter text-lg"
                     }
                     whileTap={{ scale: 0.97 }}
-                    onClick={() => setShowAppendModal(prev => !prev)}
+                    onClick={() => !showAppendModal && setShowAppendModal(true)}
                 >
                     <FaPlus className="m-0 mr-2" size={18} fill="#D3D3D3" />
                     <span style={{ color: "#D3D3D3" }} className="font-bold text-lg">
@@ -54,7 +55,9 @@ const Overview: React.FC = () => {
                     </span>
                 </motion.button>
             </div>
-            {showAppendModal && <AppendItemOverlay />}
+            <AnimatePresence>
+                {showAppendModal && <AppendItemOverlay setShowAppendModal={setShowAppendModal} />}
+            </AnimatePresence>
         </div>
     )
 }
