@@ -1,19 +1,22 @@
 import React from "react"
 
+export type ClickEvent = React.TouchEvent<HTMLButtonElement> | React.MouseEvent<HTMLButtonElement, MouseEvent>
 interface Props {
-    onClick?: () => void
+    onClick?: (event: ClickEvent) => void
     className?: string
     disabled?: boolean
     shadow?: boolean
 }
 
 const Button: React.FC<Props> = ({ children, onClick, className, disabled = false, shadow = true }) => {
+    const handleClick = (e: ClickEvent) => !disabled && onClick?.(e)
+
     return (
         <button
             disabled={disabled}
-            onClick={() => !disabled && onClick?.()}
+            onClick={handleClick}
             className={
-                "setup-button bg-primary py-1 px-20 focus:outline-none text-primary-dark font-semibold tracking-tighter text-lg shadow-2xl " +
+                "setup-button cursor-pointer bg-primary py-1 px-20 focus:outline-none text-primary-dark font-semibold tracking-tighter text-lg shadow-2xl " +
                 (shadow && " setup-button_shadow ") +
                 className
             }
