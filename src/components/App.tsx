@@ -75,7 +75,9 @@ const App: React.FC = () => {
                         <IonRouterOutlet>
                             <Route
                                 path="/"
-                                render={({ history }) => (setupPage === null ? <Home /> : <Setup history={history} />)}
+                                render={({ history }) =>
+                                    setupPage === null ? <Home history={history} /> : <Setup history={history} />
+                                }
                                 exact={true}
                             />
                             <Route path="/home" component={Home} exact={true} />
