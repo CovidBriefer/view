@@ -64,34 +64,36 @@ const Configuration: React.FC<Props> = ({
                     Um dir die wichtigsten Informationen kurz zusammenfassen zu können, benötigen wir einige Angaben von
                     dir.
                 </p>
-                <Dropdown
-                    heading={
-                        <DropdownHeading>
-                            In welchem <span className="text-primary">Bundesland</span> lebst du?
-                        </DropdownHeading>
-                    }
-                    initialHeader="Wähle eine Bundesland"
-                    list={states}
-                    callback={state => setSelectedState(state)}
-                />
-                {selectedState && (
-                    <motion.div
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        transition={{ delay: 0.3, duration: 0.15 }}
-                    >
-                        <Dropdown
-                            heading={
-                                <DropdownHeading>
-                                    In welchem <span className="text-primary">Kreis</span> lebst du?
-                                </DropdownHeading>
-                            }
-                            initialHeader="Wähle einen Kreis"
-                            list={districts}
-                            callback={district => setSelectedDistrict(district)}
-                        />
-                    </motion.div>
-                )}
+                <div className="px-6">
+                    <Dropdown
+                        heading={
+                            <DropdownHeading>
+                                In welchem <span className="text-primary">Bundesland</span> lebst du?
+                            </DropdownHeading>
+                        }
+                        initialHeader="Wähle eine Bundesland"
+                        list={states}
+                        callback={state => setSelectedState(state)}
+                    />
+                    {selectedState && (
+                        <motion.div
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            transition={{ delay: 0.3, duration: 0.15 }}
+                        >
+                            <Dropdown
+                                heading={
+                                    <DropdownHeading>
+                                        In welchem <span className="text-primary">Kreis</span> lebst du?
+                                    </DropdownHeading>
+                                }
+                                initialHeader="Wähle einen Kreis"
+                                list={districts}
+                                callback={district => setSelectedDistrict(district)}
+                            />
+                        </motion.div>
+                    )}
+                </div>
             </div>
             <div className="absolute bottom-16 w-full flex justify-center">
                 <Button
