@@ -33,10 +33,10 @@ const AppendItemOverlay: React.FC<Props> = ({ setShowAppendModal }) => {
     }, [response, loading, error])
     return (
         <motion.div
-            className="bg-bg-light pt-10 pb-16 fixed w-full bottom-0 left-0 px-7"
+            className="bg-bg-light fixed py-10 w-full bottom-0 left-0 px-7"
             style={{
                 filter: "drop-shadow(0px 0px 16px rgba(0, 0, 0, 0.1))",
-                borderRadius: "20px"
+                borderRadius: "20px 20px 0 0"
             }}
             animate={{ y: "0%" }}
             initial={{ y: "100%" }}
@@ -81,13 +81,13 @@ const AppendItemOverlay: React.FC<Props> = ({ setShowAppendModal }) => {
                             <>
                                 <h1 className="font-semibold mb-0">Bundesland</h1>
                                 <h3 className="font-medium text-xl my-2 -mb-1 leading-6 text-center">
-                                    Dir wird die 7-Tage-Inzidenz und die Entwicklung des ausgewählten Bundeslands live
-                                    in deinem Feed angezeigt.
+                                    Dir wird die 7-Tage-Inzidenz und die Live-Entwicklung in deinem Feed angezeigt.
                                 </h3>
                                 <Dropdown
                                     callback={s => console.log("Selected:", s)}
                                     list={[...states]}
                                     heading=""
+                                    dropShadow="drop-shadow(0px 4px 6px rgba(0, 0, 0, 0.15))"
                                     initialHeader="Wähle ein Bundesland"
                                     orientation="top"
                                 />
@@ -104,8 +104,8 @@ const AppendItemOverlay: React.FC<Props> = ({ setShowAppendModal }) => {
 }
 
 const AppendButton: React.FC<{ name: string; onClick?: (e: ClickEvent) => void }> = ({ name, onClick }) => (
-    <Button onClick={onClick} className="cursor-pointer flex justify-center items-center mt-5 w-72">
-        <span className="text-bg-light">{name}</span>
+    <Button onClick={onClick} className="cursor-pointer flex justify-center items-center mt-5 w-full">
+        <span className="text-bg-light w-full">{name}</span>
         {/* <FaArrowRight fill="rgb(31, 65, 96)" /> */}
     </Button>
 )
