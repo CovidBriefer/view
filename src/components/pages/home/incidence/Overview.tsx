@@ -1,7 +1,8 @@
 import { AnimatePresence, motion } from "framer-motion"
-import React, { useEffect, useState } from "react"
+import React, { useContext, useEffect, useState } from "react"
 import { FaRegChartBar, FaPlus } from "react-icons/fa"
 import useStorage from "../../../../hooks/useStorage"
+import { StorageContext } from "../../../App"
 import AppendItemOverlay from "./AppendItemOverlay"
 import Item from "./Item"
 
@@ -19,24 +20,56 @@ export type IncidenceItem = {
 }
 
 const Overview: React.FC = () => {
+    const { store } = useContext(StorageContext)
     const { data: cachedIncidenceItems, loading: cachedIncidenceItemsLoading } = useStorage(
         "config.incidence.items",
         true
     )
     const [incidenceItems, setIncidenceItems] = useState<IncidenceItem[]>([])
     const [showAppendModal, setShowAppendModal] = useState(false)
+    const { data: config } = useStorage("config", true)
 
     useEffect(() => {
         if (cachedIncidenceItems || !cachedIncidenceItemsLoading) setIncidenceItems(cachedIncidenceItems)
     }, [cachedIncidenceItems, cachedIncidenceItemsLoading])
+    useEffect(() => {
+        console.log("Showing append modal", showAppendModal)
+    }, [showAppendModal])
+
+    const addIncidenceItem = async (item: IncidenceItem) => {
+        setIncidenceItems(prev => [...prev, item])
+        const conf: any = { ...config }
+        let itemToSet: IncidenceItem
+        if (item.type === "state") {
+            itemToSet = {
+                name: item.name,
+                type: "state",
+                abbreviation: item.abbreviation
+            }
+        } else {
+            itemToSet = {
+                name: item.name,
+                type: "district",
+                stateAbbreviation: item.stateAbbreviation,
+                ags: item.ags
+            }
+        }
+
+        conf.incidence = {
+            items: [...conf.incidence.items, itemToSet],
+            lastUpdate: Date.now()
+        }
+        await store?.set("config", JSON.stringify(conf))
+        setShowAppendModal(false)
+    }
 
     return (
-        <div className="mt-7">
+        <div className="mt-7 overflow-auto" style={{ height: "80%" }}>
             <div className="flex items-center">
                 <FaRegChartBar size={25} className="mr-2" color="#56CEC0" fill="#56CEC0" />
                 <h2 className="m-0 font-semibold text-2xl">Inzidenzentwicklung</h2>
             </div>
-            <div className="w-full mt-5">
+            <div className="w-full mt-5 h-full">
                 <Item data={{ type: "germany", name: "Deutschland" }} />
                 {incidenceItems &&
                     incidenceItems.map((item: IncidenceItem) => (
@@ -47,7 +80,7 @@ const Overview: React.FC = () => {
                         "w-full flex items-center justify-center setup-button mt-6 py-2 bg-bg-light px-20 focus:outline-non font-semibold tracking-tighter text-lg"
                     }
                     whileTap={{ scale: 0.97 }}
-                    onClick={() => !showAppendModal && setShowAppendModal(true)}
+                    onClick={() => setShowAppendModal(true)}
                 >
                     <FaPlus className="m-0 mr-2" size={18} fill="#D3D3D3" />
                     <span style={{ color: "#D3D3D3" }} className="font-bold text-lg">
@@ -56,7 +89,13 @@ const Overview: React.FC = () => {
                 </motion.button>
             </div>
             <AnimatePresence>
-                {showAppendModal && <AppendItemOverlay setShowAppendModal={setShowAppendModal} />}
+                {showAppendModal && (
+                    <AppendItemOverlay
+                        incidenceItems={incidenceItems}
+                        addIncidenceItem={addIncidenceItem}
+                        setShowAppendModal={setShowAppendModal}
+                    />
+                )}
             </AnimatePresence>
         </div>
     )
