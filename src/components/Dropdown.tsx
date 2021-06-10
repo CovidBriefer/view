@@ -33,10 +33,13 @@ const Dropdown: React.FC<Props> = ({
     const [headerTitle, setHeaderTitle] = useState(initialHeader || "Select an item")
     const [listDisplay, setListDisplay] = useState<"hidden" | "show">("hidden")
     const [list, setList] = useState<any[]>([])
+    const [used, setUsed] = useState(false)
 
     useEffect(() => {
-        setList(initialList)
-        setHeaderTitle(initialHeader || "Select an item")
+        if (!used) {
+            setList(initialList)
+            setHeaderTitle(initialHeader || "Select an item")
+        }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [initialList])
 
@@ -48,6 +51,7 @@ const Dropdown: React.FC<Props> = ({
             return item.id !== i.id ? (i.selected = false) : (i.selected = true)
         })
         setList(temp)
+        setUsed(true)
         callback(item)
     }
 
