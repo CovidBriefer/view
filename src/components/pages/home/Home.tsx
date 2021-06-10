@@ -12,7 +12,7 @@ const Home: React.FC<{ history?: History<unknown> }> = ({ history }) => {
     }, [doneSetup, history, loading])
     return (
         <PageLayout className="mt-2">
-            <div className="px-3 mx-auto">
+            <div className="px-3 mx-auto h-full">
                 <Header showSettingsIcon={true} />
                 <Overview />
             </div>
