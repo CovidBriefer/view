@@ -4,22 +4,29 @@ import Button, { ClickEvent } from "../../../Button"
 import Dropdown from "../../../Dropdown"
 import { IoIosClose } from "react-icons/io"
 import useCovidApi, { District, State } from "../../../../hooks/useCovidApi"
-import { formatStates } from "../../../../utils/format"
+import { formatStates, parseDistrictsByState } from "../../../../utils/format"
+import { IncidenceItem } from "./Overview"
 
 interface Props {
+    incidenceItems: IncidenceItem[]
     setShowAppendModal: (show: boolean) => void
-    addIncidenceItem: (item: District | State) => void
+    addIncidenceItem: (item: IncidenceItem) => void
 }
 
-const AppendItemOverlay: React.FC<Props> = ({ setShowAppendModal, addIncidenceItem }) => {
+const AppendItemOverlay: React.FC<Props> = ({ setShowAppendModal, addIncidenceItem, incidenceItems }) => {
     const [currentSection, setCurrentSection] = useState<"selection" | "configuration">("selection")
     const [states, setStates] = useState<State[]>([])
     const { response, loading, error } = useCovidApi({
         method: "GET",
         url: "/states"
     })
+    const { response: allDistricts, loading: allDistrictsLoading } = useCovidApi({ method: "GET", url: "/districts" })
 
-    const [selectedItem, setSelectedItem] = useState<State | District>()
+    const [selectedItem, setSelectedItem] = useState<IncidenceItem>()
+
+    // Handle districts section
+    const [selectedState, setSelectedState] = useState<State>()
+    const [districts, setDistricts] = useState<District[]>([])
 
     // const { response: _districts, loading: _districtsLoading } = useCovidApi({ method: "GET", url: "/districts" })
     const [type, setType] = useState<"state" | "district">()
@@ -35,8 +42,26 @@ const AppendItemOverlay: React.FC<Props> = ({ setShowAppendModal, addIncidenceIt
         }
     }, [response, loading, error])
 
+    useEffect(() => {
+        if (!allDistrictsLoading && selectedState) {
+            setDistricts(parseDistrictsByState(allDistricts.data, selectedState))
+        }
+    }, [allDistricts, allDistrictsLoading, selectedState])
+
     const handleSelectionChange = (selection: any) => {
         setSelectedItem(selection)
+    }
+
+    const filterDuplicateItems = (items: (State | District)[]) => {
+        return items.filter(element => {
+            if ("abbreviation" in element) {
+                return incidenceItems
+                    .filter(i => i.type === "state")
+                    .every(i => i.abbreviation !== element.abbreviation)
+            } else {
+                return incidenceItems.filter(i => i.type === "district").every(i => i.ags !== element.ags)
+            }
+        })
     }
     return (
         <motion.div
@@ -87,24 +112,52 @@ const AppendItemOverlay: React.FC<Props> = ({ setShowAppendModal, addIncidenceIt
                         {type === "state" ? (
                             <>
                                 <h1 className="font-semibold mb-0">Bundesland</h1>
-                                <h3 className="font-medium text-xl my-2 -mb-1 leading-6 text-center">
-                                    Dir wird die 7-Tage-Inzidenz und die Live-Entwicklung in deinem Feed angezeigt.
-                                </h3>
-                                <Dropdown
-                                    callback={handleSelectionChange}
-                                    list={[...states]}
-                                    heading=""
-                                    dropShadow="drop-shadow(0px 4px 6px rgba(0, 0, 0, 0.15))"
-                                    initialHeader="Wähle ein Bundesland"
-                                    orientation="top"
-                                />
+                                {/* <h3>Füge ein Bundesland hinzu und</h3> */}
+                                <div className="w-full -mt-3">
+                                    <Dropdown
+                                        callback={s => handleSelectionChange(s)}
+                                        list={filterDuplicateItems(states)}
+                                        heading=""
+                                        dropShadow="drop-shadow(0px 4px 6px rgba(0, 0, 0, 0.15))"
+                                        initialHeader="Wähle ein Bundesland"
+                                        orientation="top"
+                                    />
+                                </div>
                                 <AppendButton
                                     name="Hinzufügen"
-                                    onClick={() => selectedItem && addIncidenceItem(selectedItem)}
+                                    onClick={() => selectedItem && addIncidenceItem({ ...selectedItem, type: "state" })}
                                 />
                             </>
                         ) : (
-                            ""
+                            <>
+                                <h1 className="font-semibold mb-0"> Land-/Stadtkreis</h1>
+                                <div className="w-full -my-4">
+                                    <Dropdown
+                                        callback={s => setSelectedState(s)}
+                                        list={states}
+                                        heading=""
+                                        dropShadow="drop-shadow(0px 4px 6px rgba(0, 0, 0, 0.15))"
+                                        initialHeader="Wähle ein Bundesland"
+                                        orientation="top"
+                                    />
+                                </div>
+                                <div className="w-full mb-3">
+                                    <Dropdown
+                                        callback={s => handleSelectionChange(s)}
+                                        list={districts}
+                                        heading=""
+                                        dropShadow="drop-shadow(0px 4px 6px rgba(0, 0, 0, 0.15))"
+                                        initialHeader="Wähle einen Kreis"
+                                        orientation="top"
+                                    />
+                                </div>
+                                <AppendButton
+                                    name="Hinzufügen"
+                                    onClick={() =>
+                                        selectedItem && addIncidenceItem({ ...selectedItem, type: "district" })
+                                    }
+                                />
+                            </>
                         )}
                     </motion.div>
                 )}
