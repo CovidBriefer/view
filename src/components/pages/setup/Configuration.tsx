@@ -5,7 +5,7 @@ import Dropdown from "../../Dropdown"
 import Header from "../../Header"
 import useCovidApi, { District, State } from "../../../hooks/useCovidApi"
 import { Page } from "../../.."
-import { compare, formatStates } from "../../../utils/format"
+import { formatStates, parseDistrictsByState } from "../../../utils/format"
 
 type Props = {
     updatePage: (page: Page) => void
@@ -38,18 +38,11 @@ const Configuration: React.FC<Props> = ({
         }
     }, [response, loading, error])
 
-    const parseDistricts = (districts: { [key: number]: District }) => {
-        var filtered = filter(districts, (obj: District) => obj.stateAbbreviation === selectedState?.abbreviation)
-        const newDistricts: District[] = []
-        Object.keys(filtered).forEach(key => newDistricts.push({ ...filtered[key], id: filtered[key].ags }))
-        setDistricts(newDistricts.sort((a, b) => compare(a, b, "name")))
-    }
-
     useEffect(() => {
         if (!_districtsLoading && _districts && selectedState) {
             const data = _districts.data
 
-            parseDistricts(data)
+            setDistricts(parseDistrictsByState(data, selectedState))
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [_districts, _districtsLoading, selectedState])
@@ -111,10 +104,5 @@ const Configuration: React.FC<Props> = ({
 const DropdownHeading: React.FC = ({ children }) => (
     <h1 className="text-xl mb-2 font-medium tracking-tighter text-left">{children}</h1>
 )
-const filter = (obj: any, predicate: (district: District) => void) =>
-    Object.keys(obj)
-        .filter(key => predicate(obj[key]))
-        // eslint-disable-next-line no-sequences
-        .reduce((res: any, key) => ((res[key] = obj[key]), res), {})
 
 export default Configuration
