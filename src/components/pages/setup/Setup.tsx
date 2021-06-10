@@ -67,7 +67,10 @@ const Setup: React.FC<Props> = ({ history }) => {
         console.log("Current config:", config)
         const conf: any = { ...config }
         conf.incidence = {
-            items: [{ ...selectedDistrict, type: "district" }],
+            items: [
+                { ...selectedState, type: "state" },
+                { ...selectedDistrict, type: "district" }
+            ],
             lastUpdate: Date.now()
         }
         console.log("Set new conf:", conf)
