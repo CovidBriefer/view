@@ -7,6 +7,7 @@ import axios from "axios"
 import useCovidHistory from "../../../../hooks/useCovidHistory"
 import { motion } from "framer-motion"
 import { FaTrashAlt } from "react-icons/fa"
+import { IonSpinner } from "@ionic/react"
 
 interface Props {
     data: IncidenceItem
@@ -67,11 +68,11 @@ const Item: React.FC<Props> = ({ data, removeItem }) => {
                 >
                     {incidenceData?.name ?? data.name}
                 </h3>
-                <div className="flex">
+                <div className="flex items-center">
                     <h1 className="text-2xl my-1 font-bold mr-4 m-0">
                         {Math.round((incidenceData?.weekIncidence ?? 0) * 10) / 10}
                     </h1>
-                    {difference !== 0 && !loading && (
+                    {!loading ? (
                         <h4 className="m-0 flex items-center font-semibold">
                             <img
                                 src={diffType === "inc" ? arrowUp : arrowDown}
@@ -88,6 +89,8 @@ const Item: React.FC<Props> = ({ data, removeItem }) => {
                                 {Math.round(difference * 10) / 10}
                             </p>
                         </h4>
+                    ) : (
+                        <IonSpinner name="crescent" />
                     )}
                 </div>
             </motion.div>
