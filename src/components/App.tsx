@@ -39,15 +39,14 @@ const App: React.FC = () => {
         const _store = new Storage()
         await _store.create()
         // _store.clear()
-        // _store.set("config", JSON.stringify({ setup: { done: false, currentPage: "introduction" } } as Config))
-
         _store.get("config").then(async res => {
             if (!res) {
                 console.log("No config set, setting...")
                 await _store.set(
                     "config",
                     JSON.stringify({
-                        setup: { done: false, currentPage: "introduction" }
+                        setup: { done: false, currentPage: "introduction" },
+                        incidence: { items: [] }
                     } as Config)
                 )
             }
