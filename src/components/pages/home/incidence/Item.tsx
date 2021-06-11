@@ -59,7 +59,7 @@ const Item: React.FC<Props> = ({ data, removeItem }) => {
             <motion.div
                 animate={showBin ? { x: -35 } : { x: 0 }}
                 onPan={(_, pointInfo) => handlePan(pointInfo)}
-                className="bg-bg-light px-5 py-3 my-4 flex items-center justify-between rounded"
+                className="bg-bg-light px-5 py-3 my-3 flex items-center justify-between rounded"
                 style={{ width: "100%", filter: "drop-shadow(0px 4px 6px rgba(0, 0, 0, 0.075))" }}
             >
                 <h3
