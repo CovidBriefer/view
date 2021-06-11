@@ -1,7 +1,7 @@
 import { motion, Variants } from "framer-motion"
 import { AnimationDefinition } from "framer-motion/types/render/utils/animation"
 import React, { useEffect, useState } from "react"
-import { FaAngleDown } from "react-icons/fa"
+import { FaAngleDown, FaCheck } from "react-icons/fa"
 
 interface Props {
     heading: JSX.Element | string
@@ -32,27 +32,20 @@ const Dropdown: React.FC<Props> = ({
     const [isListOpen, setIsListOpen] = useState(false)
     const [headerTitle, setHeaderTitle] = useState(initialHeader || "Select an item")
     const [listDisplay, setListDisplay] = useState<"hidden" | "show">("hidden")
-    const [list, setList] = useState<any[]>([])
-    const [used, setUsed] = useState(false)
+    const [list, setList] = useState<DropdownItem[]>([])
+    const [selectedItemId, setSelectedItemId] = useState<number | string>()
 
     useEffect(() => {
-        if (!used) {
-            setList(initialList)
-            setHeaderTitle(initialHeader || "Select an item")
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
+        setList(initialList)
     }, [initialList])
 
-    const selectItem = (item: any) => {
+    const selectItem = (item: DropdownItem) => {
+        if (item.id !== selectedItemId) {
+            callback(item)
+            setSelectedItemId(item.id)
+        }
         setHeaderTitle(item.name)
         setIsListOpen(false)
-        let temp: List = [...list]
-        temp.map(i => {
-            return item.id !== i.id ? (i.selected = false) : (i.selected = true)
-        })
-        setList(temp)
-        setUsed(true)
-        callback(item)
     }
 
     const toggleList = () => {
@@ -93,38 +86,37 @@ const Dropdown: React.FC<Props> = ({
                     (listDisplay === "hidden" ? "hidden" : "absolute")
                 }
             >
-                {list.map(
-                    item =>
-                        !item.selected && (
-                            <div
-                                key={item.id}
-                                onClick={() => selectItem(item)}
-                                style={{
-                                    background: "#254866",
-                                    borderColor: "#173752",
-                                    borderBottomWidth: "1px"
-                                }}
-                                className={
-                                    "py-2 px-4 w-full text-lg flex justify-between items-center mx-auto focus:outline-none"
-                                }
-                            >
-                                <div className="dd-list-item">{item.name}</div>
+                {list.map(item => (
+                    <div
+                        key={item.id}
+                        onClick={() => selectItem(item)}
+                        style={{
+                            background: "#254866",
+                            borderColor: "#173752",
+                            borderBottomWidth: "1px"
+                        }}
+                        className={
+                            "py-2 px-4 w-full text-lg flex justify-between items-center mx-auto focus:outline-none"
+                        }
+                    >
+                        <div className="dd-list-item">{item.name}</div>
+                        {selectedItemId === item.id && (
+                            <div>
+                                <FaCheck opacity={0.75} />
                             </div>
-                        )
-                )}
+                        )}
+                    </div>
+                ))}
             </motion.div>
         </div>
         // </div>
     )
 }
 
-type Item = {
-    id: number
-    title: string
-    selected: boolean
-    key: string
+export type DropdownItem = {
+    id: string | number
+    name: string
+    [key: string]: any
 }
-
-type List = Item[]
 
 export default Dropdown
