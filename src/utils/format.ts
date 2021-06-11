@@ -1,4 +1,6 @@
+import { IncidenceItem } from "../components/pages/home/incidence/Overview"
 import { District, State } from "../hooks/useCovidApi"
+import { generateId } from "./random"
 
 export function formatStates(data: { [key: string]: State }) {
     const _states: State[] = []
@@ -28,3 +30,22 @@ const filter = (obj: any, predicate: (district: District) => void) =>
         .filter(key => predicate(obj[key]))
         // eslint-disable-next-line no-sequences
         .reduce((res: any, key) => ((res[key] = obj[key]), res), {})
+
+export function formatStateToIncidenceItem(item: State): IncidenceItem {
+    return {
+        internalId: generateId(),
+        name: item.name,
+        type: "state",
+        id: item.id,
+        abbreviation: item.abbreviation
+    }
+}
+export function formatDistrictToIncidenceItem(item: District): IncidenceItem {
+    return {
+        internalId: generateId(),
+        name: item.name,
+        type: "district",
+        ags: item.ags,
+        stateAbbreviation: item.stateAbbreviation
+    }
+}
