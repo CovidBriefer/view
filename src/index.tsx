@@ -6,6 +6,7 @@ import { ScreenOrientation } from "@ionic-native/screen-orientation"
 import { setupConfig } from "@ionic/react"
 import { Capacitor } from "@capacitor/core"
 import { StatusBar, Style } from "@capacitor/status-bar"
+import { IncidenceItem } from "./components/pages/home/incidence/Overview"
 
 import "./styles/index.css"
 import "./styles/tailwind.css"
@@ -42,6 +43,9 @@ export type Config = {
     setup: {
         done: boolean
         currentPage: Page | null
+    }
+    incidence: {
+        items: IncidenceItem[]
     }
 }
 
