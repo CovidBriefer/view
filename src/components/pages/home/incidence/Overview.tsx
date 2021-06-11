@@ -1,14 +1,16 @@
 import { AnimatePresence, motion } from "framer-motion"
-import React, { useContext, useEffect, useState } from "react"
+import React, { useState } from "react"
 import { FaRegChartBar, FaPlus } from "react-icons/fa"
 import useStorage from "../../../../hooks/useStorage"
-import { StorageContext } from "../../../App"
+import { generateId } from "../../../../utils/random"
+// import { StorageContext } from "../../../App"
 import AppendItemOverlay from "./AppendItemOverlay"
 import Item from "./Item"
 
 export type IncidenceType = "germany" | "state" | "district"
 
 export type IncidenceItem = {
+    internalId: string
     type: IncidenceType
     id?: number
     name: string
@@ -20,47 +22,32 @@ export type IncidenceItem = {
 }
 
 const Overview: React.FC = () => {
-    const { store } = useContext(StorageContext)
-    const { data: cachedIncidenceItems, loading: cachedIncidenceItemsLoading } = useStorage(
-        "config.incidence.items",
-        true
-    )
-    const [incidenceItems, setIncidenceItems] = useState<IncidenceItem[]>([])
+    const { data: incidenceItems, update: updateIncidenceItems } = useStorage("config.incidence.items", true)
     const [showAppendModal, setShowAppendModal] = useState(false)
-    const { data: config } = useStorage("config", true)
-
-    useEffect(() => {
-        if (cachedIncidenceItems || !cachedIncidenceItemsLoading) setIncidenceItems(cachedIncidenceItems)
-    }, [cachedIncidenceItems, cachedIncidenceItemsLoading])
-    useEffect(() => {
-        console.log("Showing append modal", showAppendModal)
-    }, [showAppendModal])
 
     const addIncidenceItem = async (item: IncidenceItem) => {
-        setIncidenceItems(prev => [...prev, item])
-        const conf: any = { ...config }
-        let itemToSet: IncidenceItem
-        if (item.type === "state") {
-            itemToSet = {
-                name: item.name,
-                type: "state",
-                abbreviation: item.abbreviation
-            }
-        } else {
-            itemToSet = {
-                name: item.name,
-                type: "district",
-                stateAbbreviation: item.stateAbbreviation,
-                ags: item.ags
-            }
-        }
-
-        conf.incidence = {
-            items: [...conf.incidence.items, itemToSet],
-            lastUpdate: Date.now()
-        }
-        await store?.set("config", JSON.stringify(conf))
+        const itemToSet: IncidenceItem =
+            item.type === "state"
+                ? {
+                      internalId: generateId(),
+                      name: item.name,
+                      type: "state",
+                      abbreviation: item.abbreviation
+                  }
+                : {
+                      internalId: generateId(),
+                      name: item.name,
+                      type: "district",
+                      stateAbbreviation: item.stateAbbreviation,
+                      ags: item.ags
+                  }
+        await updateIncidenceItems([...incidenceItems, itemToSet])
         setShowAppendModal(false)
+    }
+
+    const removeItem = async (id: string) => {
+        const filtered = [...incidenceItems].filter(e => e.internalId !== id)
+        await updateIncidenceItems(filtered)
     }
 
     return (
@@ -70,10 +57,13 @@ const Overview: React.FC = () => {
                 <h2 className="m-0 font-semibold text-2xl">Inzidenzentwicklung</h2>
             </div>
             <div className="w-full mt-5 h-full">
-                <Item data={{ type: "germany", name: "Deutschland" }} />
+                <Item
+                    removeItem={id => console.log("Removing item with id ", id)}
+                    data={{ type: "germany", name: "Deutschland", internalId: generateId() }}
+                />
                 {incidenceItems &&
                     incidenceItems.map((item: IncidenceItem) => (
-                        <Item key={item.abbreviation ?? item.ags} data={item} />
+                        <Item removeItem={removeItem} key={item.abbreviation ?? item.ags} data={item} />
                     ))}
                 <motion.button
                     className={
