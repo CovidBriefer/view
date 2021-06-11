@@ -60,6 +60,7 @@ const Overview: React.FC = () => {
                 <Item
                     removeItem={id => console.log("Removing item with id ", id)}
                     data={{ type: "germany", name: "Deutschland", internalId: generateId() }}
+                    removable={false}
                 />
                 {incidenceItems &&
                     incidenceItems.map((item: IncidenceItem) => (

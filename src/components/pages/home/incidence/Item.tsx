@@ -12,13 +12,14 @@ import { IonSpinner } from "@ionic/react"
 interface Props {
     data: IncidenceItem
     removeItem: (internalId: string) => void
+    removable?: boolean
 }
 
 interface IncidenceDataItem extends IncidenceItem {
     weekIncidence: number
 }
 
-const Item: React.FC<Props> = ({ data, removeItem }) => {
+const Item: React.FC<Props> = ({ data, removeItem, removable = true }) => {
     const [showBin, setShowBin] = useState(false)
     const [incidenceData, setIncidenceData] = useState<IncidenceDataItem>()
     const { diffType, difference, loading } = useCovidHistory({
@@ -57,7 +58,7 @@ const Item: React.FC<Props> = ({ data, removeItem }) => {
     return (
         <div className="overflow-hidden flex justify-center items-center">
             <motion.div
-                animate={showBin ? { x: -35 } : { x: 0 }}
+                animate={showBin && removable ? { x: -35 } : { x: 0 }}
                 onPan={(_, pointInfo) => handlePan(pointInfo)}
                 className="bg-bg-light px-5 py-3 my-3 flex items-center justify-between rounded"
                 style={{ width: "100%", filter: "drop-shadow(0px 4px 6px rgba(0, 0, 0, 0.075))" }}
@@ -99,7 +100,7 @@ const Item: React.FC<Props> = ({ data, removeItem }) => {
                 className="m-0"
                 initial={{ x: 50, opacity: 1, display: "none", scale: 0.5 }}
                 animate={
-                    showBin
+                    removable && showBin
                         ? { x: -20, opacity: 1, scale: 1, display: "block" }
                         : { x: 20, opacity: 1, display: "none", scale: 0.5 }
                 }
