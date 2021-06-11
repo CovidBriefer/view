@@ -22,6 +22,7 @@ export default function useCovidHistory(options: HistoryParams) {
                     const diff = pastIncidence - options.incidenceData.weekIncidence!
                     setDifference(Math.abs(diff))
                     setDiffType(diff > 0 ? "dec" : "inc")
+                    setLoading(false)
                 })
             } else if (options.type === "state" || options.type === "district") {
                 axios
@@ -32,11 +33,14 @@ export default function useCovidHistory(options: HistoryParams) {
                         const history = obj.history
                         const pastIncidence = history[0].weekIncidence
                         const diff = pastIncidence - options.incidenceData.weekIncidence!
+                        console.log("Getting diff for", options.param, diff)
                         setDifference(Math.abs(diff))
                         setDiffType(diff > 0 ? "dec" : "inc")
+                        setLoading(false)
                     })
+            } else {
+                setLoading(false)
             }
-            setLoading(false)
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [options.incidenceData.weekIncidence])
