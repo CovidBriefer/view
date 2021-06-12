@@ -1,5 +1,6 @@
 import { AnimatePresence, motion } from "framer-motion"
 import React, { useState } from "react"
+import { useRef } from "react"
 import { FaRegChartBar, FaPlus } from "react-icons/fa"
 import useStorage from "../../../../hooks/useStorage"
 import { generateId } from "../../../../utils/random"
@@ -22,8 +23,28 @@ export type IncidenceItem = {
 }
 
 const Overview: React.FC = () => {
-    const { data: incidenceItems, update: updateIncidenceItems } = useStorage("config.incidence.items", true)
+    const { data: lastUpdated, update: updateLastUpdated } = useStorage("config.incidence.lastUpdated", true)
+    const {
+        data: incidenceItems,
+        update: updateIncidenceItems
+    }: { data: IncidenceItem[]; update: (newValue: any) => Promise<void> } = useStorage("config.incidence.items", true)
     const [showAppendModal, setShowAppendModal] = useState(false)
+
+    const updatedItemKeys = useRef<string[]>([])
+
+    const createUpdateCallback = (internalId: string) => {
+        return () => {
+            updatedItemKeys.current.push(internalId)
+            if (incidenceItems && incidenceItems.every(item => updatedItemKeys.current.includes(item.internalId))) {
+                allItemsUpdated()
+                updatedItemKeys.current = []
+            }
+        }
+    }
+
+    const allItemsUpdated = async () => {
+        await updateLastUpdated(Date.now())
+    }
 
     const addIncidenceItem = async (item: IncidenceItem) => {
         const itemToSet: IncidenceItem =
@@ -58,13 +79,24 @@ const Overview: React.FC = () => {
             </div>
             <div className="w-full mt-5 h-full">
                 <Item
-                    removeItem={id => console.log("Removing item with id ", id)}
-                    data={{ type: "germany", name: "Deutschland", internalId: generateId() }}
+                    updateCallback={createUpdateCallback("2984u592u34239428938492dkaj38")}
+                    data={{
+                        type: "germany",
+                        name: "Deutschland",
+                        internalId: "2984u592u34239428938492dkaj38",
+                        lastUpdated
+                    }}
                     removable={false}
                 />
                 {incidenceItems &&
                     incidenceItems.map((item: IncidenceItem) => (
-                        <Item removeItem={removeItem} key={item.abbreviation ?? item.ags} data={item} />
+                        <Item
+                            updateCallback={createUpdateCallback(item.internalId)}
+                            // lastUpdated={lastUpdated}
+                            removeItem={removeItem}
+                            key={item.internalId}
+                            data={{ ...item, lastUpdated }}
+                        />
                     ))}
                 <motion.button
                     className={
