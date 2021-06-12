@@ -5,7 +5,7 @@ import Dropdown from "../../Dropdown"
 import Header from "../../Header"
 import useCovidApi, { District, State } from "../../../hooks/useCovidApi"
 import { Page } from "../../.."
-import { formatStates, parseDistrictsByState } from "../../../utils/format"
+import { formatStates, parseDistrictsByState, renameAmbiguousItems } from "../../../utils/format"
 
 type Props = {
     updatePage: (page: Page) => void
@@ -41,8 +41,9 @@ const Configuration: React.FC<Props> = ({
     useEffect(() => {
         if (!_districtsLoading && _districts && selectedState) {
             const data = _districts.data
-
-            setDistricts(parseDistrictsByState(data, selectedState))
+            const parsed = parseDistrictsByState(data, selectedState)
+            renameAmbiguousItems(parsed)
+            setDistricts(parsed)
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [_districts, _districtsLoading, selectedState])

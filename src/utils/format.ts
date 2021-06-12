@@ -18,6 +18,23 @@ export function compare(a: any, b: any, by: string) {
     return 0
 }
 
+export function renameAmbiguousItems(data: District[]) {
+    let previous = data[0]
+
+    for (let i = 1; i < data.length; i++) {
+        const current = data[i]
+        if (previous.name === current.name) {
+            if (previous.county.startsWith("LK")) {
+                previous.name += " (Landkreis)"
+            } else if (current.county.startsWith("LK")) {
+                current.name += " (Landkreis)"
+            }
+        }
+        previous = current
+    }
+    data.sort((a, b) => (a.name > b.name ? 1 : -1))
+}
+
 export function parseDistrictsByState(districts: { [key: number]: District }, selectedState: State) {
     var filtered = filter(districts, (obj: District) => obj.stateAbbreviation === selectedState?.abbreviation)
     const newDistricts: District[] = []
