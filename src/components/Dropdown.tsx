@@ -82,7 +82,7 @@ const Dropdown: React.FC<Props> = ({
                 role="list"
                 className={
                     (orientation === "top" ? "bottom-10 " : "") +
-                    "dd-list max-h-32 overflow-auto w-full z-50 " +
+                    "dd-list max-h-48 overflow-auto w-full z-50 " +
                     (listDisplay === "hidden" ? "hidden" : "absolute")
                 }
             >
