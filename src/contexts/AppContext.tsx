@@ -1,4 +1,5 @@
 import { App } from "@capacitor/app"
+import { PluginListenerHandle } from "@capacitor/core"
 import { createContext, useContext, useEffect, useState } from "react"
 
 type AppContextProps = {
@@ -11,13 +12,14 @@ const AppContextProvider: React.FC = ({ children }) => {
     const [appActive, setAppActive] = useState(true)
 
     useEffect(() => {
-        console.log("Use effect fired!")
-        const listener = App.addListener("appStateChange", state => {
-            console.log("App state changed:", state)
+        let listener: PluginListenerHandle
+        App.addListener("appStateChange", state => {
             setAppActive(state.isActive)
+        }).then(val => {
+            listener = val
         })
         return () => {
-            listener.remove()
+            listener?.remove()
         }
     }, [])
 
