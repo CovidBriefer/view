@@ -46,7 +46,7 @@ const Item: React.FC<Props> = ({ data, removeItem, updateCallback, removable = t
     }
 
     useEffect(() => {
-        const offset = 1000 * 60 * 60 * 2
+        const offset = 1000 * 60 * 60 * 3
         if (isActive) {
             if (Date.now() > data.lastUpdated + offset) {
                 console.log("Need to fetch new data!")
@@ -81,7 +81,7 @@ const Item: React.FC<Props> = ({ data, removeItem, updateCallback, removable = t
                     className="text-lg text-light-gray font-medium m-0 w-1/2"
                     style={{ textOverflow: "ellipsis", overflow: "hidden", whiteSpace: "nowrap" }}
                 >
-                    {incidenceData?.name ?? data.name}
+                    {data.name}
                 </h3>
                 <div className="flex items-center">
                     <h1 className="text-2xl my-1 font-bold mr-4 m-0">
