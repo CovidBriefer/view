@@ -13,7 +13,7 @@ const Home: React.FC<{ history?: History<unknown> }> = ({ history }) => {
     return (
         <PageLayout className="mt-2">
             <div className="px-3 mx-auto h-full">
-                <Header showSettingsIcon={true} />
+                <Header showSettingsIcon={false} />
                 <Overview />
             </div>
         </PageLayout>
