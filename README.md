@@ -91,6 +91,70 @@ Create production build/simulate without live server
     
  4. Open XCode, select a device and run it!
 
-<ins>Android device or simulator</ins>
+<ins>Android device or emulator</ins>
 
- TODO
+Emulate on device using Android Studio and the Create-React-App server
+
+1. Copy the capacitor config
+
+   ```console
+   npx cap copy android
+   ```
+
+2. Sync the app with
+
+   ```console
+   npx cap sync android
+   ```
+
+3. Open Android Studio by running
+
+   ```console
+   npx cap open android
+   ```
+
+4. Select a device and start the emulator. Modified code will be shown live in the simulator.
+
+---
+Create production build/emulate without live server
+
+1. Remove the live-server config from `capacitor.config.ts`.
+   Make sure that you do not commit any changes to this file as long as they are related to your IP/live server configuration.
+
+   ```typescript
+   import { CapacitorConfig } from "@capacitor/cli"
+   import { networkInterfaces } from "os"
+
+   const getLocalExternalIP = () =>
+       []
+           .concat(...Object.values(networkInterfaces()))
+           .filter(details => details.family === "IPv4" && !details.internal)
+           .pop().address
+
+   const config: CapacitorConfig = {
+       appId: "me.wening.covidbriefer",
+       appName: "Covid Briefer",
+       webDir: "build",
+       bundledWebRuntime: false,
+       // server: {
+       //     url: `http://${getLocalExternalIP()}:3000`,
+       //     cleartext: true
+       // }
+   }
+
+   export default config
+   ```
+2. Copy the capacitor config
+
+   ```console
+   npx cap copy android
+   ```
+
+3. Build and sync your changes
+
+   ```console
+   yarn run build-android
+   ```
+
+4. Open Android Studio, select a device and run it!
+
