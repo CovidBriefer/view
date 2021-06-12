@@ -7,6 +7,7 @@ import Home from "./pages/home/Home"
 import { IonApp, IonLoading, IonRouterOutlet } from "@ionic/react"
 import { Config, Page } from ".."
 import { Storage } from "@ionic/storage"
+import { Capacitor } from "@capacitor/core"
 
 type StorageContextProps = {
     store: Storage | null
@@ -58,9 +59,17 @@ const App: React.FC = () => {
     useEffect(() => {
         createStorage()
     }, [])
+
+    const platformClass =
+        Capacitor.getPlatform() === "android"
+            ? "platform-android"
+            : Capacitor.getPlatform() === "ios"
+            ? "platform-ios"
+            : ""
+
     return (
         <StorageContext.Provider value={{ store }}>
-            <IonApp>
+            <IonApp className={platformClass}>
                 {loading ? (
                     <IonLoading
                         isOpen={loading}
