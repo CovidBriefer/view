@@ -39,6 +39,7 @@
         "start": "set HOST=0.0.0.0&& craco start",
         "build": "craco build",
         "build-ios": "yarn build && npx cap sync ios",
+        "build-android": "yarn build && npx cap sync android",
         "test": "craco test",
         "eject": "react-scripts eject"
     },

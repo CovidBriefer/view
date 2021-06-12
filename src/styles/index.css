@@ -21,6 +21,10 @@ body,
     padding-bottom: env(safe-area-inset-bottom);
 }
 
+.platform-android .page-layout {
+    margin-top: 2.5rem;
+}
+
 /* Set style only for android */
 .md .your-class-name {
 }
