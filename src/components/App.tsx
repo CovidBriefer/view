@@ -43,13 +43,11 @@ const App: React.FC = () => {
         _store.get("config").then(async res => {
             if (!res) {
                 console.log("No config set, setting...")
-                await _store.set(
-                    "config",
-                    JSON.stringify({
-                        setup: { done: false, currentPage: "introduction" },
-                        incidence: { items: [] }
-                    } as Config)
-                )
+                const initialConfig: Config = {
+                    setup: { done: false, currentPage: "introduction" },
+                    incidence: { items: [], lastUpdated: null }
+                }
+                await _store.set("config", JSON.stringify(initialConfig))
             }
         })
         await _store.set("initialized", "true")
