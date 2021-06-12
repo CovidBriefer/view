@@ -71,7 +71,7 @@ const Item: React.FC<Props> = ({ data, removeItem, removable = true }) => {
                 </h3>
                 <div className="flex items-center">
                     <h1 className="text-2xl my-1 font-bold mr-4 m-0">
-                        {Math.round((incidenceData?.weekIncidence ?? 0) * 10) / 10}
+                        {(Math.round((incidenceData?.weekIncidence ?? 0) * 10) / 10).toFixed(1)}
                     </h1>
                     {!loading ? (
                         <h4 className="m-0 flex items-center font-semibold">
@@ -87,7 +87,8 @@ const Item: React.FC<Props> = ({ data, removeItem, removable = true }) => {
                                     " text-lg font-semibold"
                                 }
                             >
-                                {Math.round(difference * 10) / 10}
+                                {(Math.round(difference * 10) / 10).toFixed(1)}
+                                {/* {(Math.round(difference * 10) / 10)} */}
                             </p>
                         </h4>
                     ) : (
