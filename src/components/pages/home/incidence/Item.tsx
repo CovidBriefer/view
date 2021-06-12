@@ -8,18 +8,20 @@ import useCovidHistory from "../../../../hooks/useCovidHistory"
 import { motion } from "framer-motion"
 import { FaTrashAlt } from "react-icons/fa"
 import { IonSpinner } from "@ionic/react"
-
+import { useAppContext } from "../../../../contexts/AppContext"
 interface Props {
-    data: IncidenceItem
-    removeItem: (internalId: string) => void
+    data: IncidenceItem & { lastUpdated: number }
+    removeItem?: (internalId: string) => void
     removable?: boolean
+    updateCallback: () => void
 }
 
 interface IncidenceDataItem extends IncidenceItem {
     weekIncidence: number
 }
 
-const Item: React.FC<Props> = ({ data, removeItem, removable = true }) => {
+const Item: React.FC<Props> = ({ data, removeItem, updateCallback, removable = true }) => {
+    const { isActive } = useAppContext()
     const [showBin, setShowBin] = useState(false)
     const [incidenceData, setIncidenceData] = useState<IncidenceDataItem>()
     const { diffType, difference, loading } = useCovidHistory({
@@ -28,7 +30,7 @@ const Item: React.FC<Props> = ({ data, removeItem, removable = true }) => {
         incidenceData: { weekIncidence: incidenceData?.weekIncidence }
     })
 
-    const fetchIncidenceData = async () => {
+    const fetchIncidenceData = () => {
         let url = "https://covidapi-cb.wening.me"
         if (data.type === "district") {
             url += `/districts/${data.ags}`
@@ -42,6 +44,18 @@ const Item: React.FC<Props> = ({ data, removeItem, removable = true }) => {
             }
         })
     }
+
+    useEffect(() => {
+        const offset = 1000 * 60 * 60 * 2
+        if (isActive) {
+            if (Date.now() > data.lastUpdated + offset) {
+                console.log("Need to fetch new data!")
+                fetchIncidenceData()
+                updateCallback()
+            }
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [isActive, data.lastUpdated])
 
     useEffect(() => {
         fetchIncidenceData()
@@ -87,7 +101,7 @@ const Item: React.FC<Props> = ({ data, removeItem, removable = true }) => {
                                     " text-lg font-semibold"
                                 }
                             >
-                                {(Math.round(difference * 10) / 10).toFixed(1)}
+                                {(Math.round(difference * 100) / 100).toFixed(2)}
                                 {/* {(Math.round(difference * 10) / 10)} */}
                             </p>
                         </h4>
@@ -97,7 +111,7 @@ const Item: React.FC<Props> = ({ data, removeItem, removable = true }) => {
                 </div>
             </motion.div>
             <motion.div
-                onClick={() => removeItem(data.internalId)}
+                onClick={() => removeItem?.(data.internalId)}
                 className="m-0"
                 initial={{ x: 50, opacity: 1, display: "none", scale: 0.5 }}
                 animate={
