@@ -77,14 +77,19 @@ Create production build/simulate without live server
 
     export default config
     ```
+ 2. Copy the capacitor config
+ 
+    ```console
+    npx cap copy ios
+    ```
     
- 2. Build and sync your changes
+ 3. Build and sync your changes
  
     ```console
     yarn run build-ios
     ```
     
- 3. Open XCode, select a device and run it!
+ 4. Open XCode, select a device and run it!
 
 <ins>Android device or simulator</ins>
 
