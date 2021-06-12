@@ -86,6 +86,6 @@ Create production build/simulate without live server
     
  3. Open XCode, select a device and run it!
 
-<ins>iOS device or simulator</ins>
+<ins>Android device or simulator</ins>
 
  TODO
