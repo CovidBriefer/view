@@ -148,7 +148,7 @@ const AppendItemOverlay: React.FC<Props> = ({ setShowAppendModal, addIncidenceIt
                                     {selectedState && (
                                         <Dropdown
                                             callback={s => handleSelectionChange(s)}
-                                            list={districts}
+                                            list={filterDuplicateItems(districts)}
                                             heading=""
                                             dropShadow="drop-shadow(0px 4px 6px rgba(0, 0, 0, 0.15))"
                                             initialHeader="Wähle einen Kreis"
