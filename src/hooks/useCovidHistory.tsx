@@ -26,12 +26,12 @@ export default function useCovidHistory(options: HistoryParams) {
                 })
             } else if (options.type === "state" || options.type === "district") {
                 axios
-                    .get(`https://covidapi-cb.wening.me/${options.type}s/${options.param}/history/incidence/2`)
+                    .get(`https://covidapi-cb.wening.me/${options.type}s/${options.param}/history/incidence`)
                     .then(res => {
                         const data = res.data.data
                         const obj = data[Object.keys(data)[0]]
                         const history = obj.history
-                        const pastIncidence = history[0].weekIncidence
+                        const pastIncidence = history[history.length - 2].weekIncidence
                         const diff = pastIncidence - options.incidenceData.weekIncidence!
                         console.log("Getting diff for", options.param, diff)
                         setDifference(Math.abs(diff))
